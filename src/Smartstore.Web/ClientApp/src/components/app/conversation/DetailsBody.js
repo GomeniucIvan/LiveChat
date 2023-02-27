@@ -29,11 +29,10 @@ const DetailsBody = (props) => {
         });
 
         const PopulateComponent = async () => {
-            let response = await postLauncher(`messages`, null);
+            let response = await postLauncher('VisitorMessages', null);
 
             if (response && response.IsValid) {
                 setMessageList(response.Data);
-                //messageArrayList = response.Data;
             }
 
             scrollMessageList();

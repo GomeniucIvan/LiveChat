@@ -30,12 +30,11 @@ namespace Smartstore.Web.Controllers
 
         #region Methods
 
-        [HttpPost("Messages")]
-        public async Task<IActionResult> Messages()
+        [HttpPost("VisitorMessages")]
+        public async Task<IActionResult> VisitorMessages()
         {
-            // todo change
             IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
-                visitorId: null,
+                visitorId: VisitorId,
                 companyCustomerId: CustomerId).ToList();
 
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
@@ -50,7 +49,7 @@ namespace Smartstore.Web.Controllers
                 var messageDto = new CompanyMessageDto()
                 {
                     Message = model.Message,
-                    VisitorId = model.VisitorId,
+                    VisitorId = VisitorId,
                     CompanyCustomerId = CustomerId,
                     CompanyId = CompanyId,
                     Sent = false

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { postLauncher } from '../utils/HttpClient';
+import { postChat, postLauncher } from '../utils/HttpClient';
 import Launcher from './Launcher';
 import { useLocation } from 'react-router-dom';
 import { Storage } from '../utils/StorageHelper';
@@ -24,7 +24,7 @@ const LauncherWrapper = (props) => {
                 const searchParams = new URLSearchParams(location.search);
                 const settingsString = searchParams.get('settings');
                 var data = JSON.parse(settingsString);
-                let response = await postLauncher(`chat/VisitorData`, data, /*location*/ null, /*isInitCall*/ true);
+                let response = await postChat(`VisitorData`, data, /*location*/ null, /*isInitCall*/ true);
 
                 if (response && response.IsValid) {
                     const companyVisitorInfo = response.Data;
@@ -34,7 +34,7 @@ const LauncherWrapper = (props) => {
                 }
             }
 
-            let response = await postLauncher(`chat/LauncherMessages`, null);
+            let response = await postChat(`LauncherMessages`, null);
             if (response && response.IsValid) {
                 setMessageList(response.Data);
                 messageArrayList = response.Data;

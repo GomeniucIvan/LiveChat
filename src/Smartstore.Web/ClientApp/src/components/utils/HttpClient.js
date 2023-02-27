@@ -39,7 +39,6 @@ export const getNotAsync = (sufixRoute, location) => {
     return jsonData;
 };
 
-
 export const post = async (sufixRoute, object, location) => {
     const url = `${prefixRoute}${sufixRoute}`;
     const response = await fetch(url, {
@@ -69,6 +68,25 @@ export const postLauncher = async (sufixRoute, object, location, isInitCall) => 
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
             "VisitorId": Storage.VisitorId, 
+        },
+        credentials: 'include',
+        body: JSON.stringify(object)
+    });
+
+    const jsonData = await response.json();
+    redirectToLogin(/*location*/ location, /*response*/ jsonData, /*forceRedirect*/ null);
+    return jsonData;
+};
+
+export const postChat = async (sufixRoute, object, location, isInitCall) => {
+    const url = `${prefixRoute}${sufixRoute}chat/`;
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "CompanyId": Storage.CompanyId,
+            "VisitorId": Storage.VisitorId,
         },
         credentials: 'include',
         body: JSON.stringify(object)

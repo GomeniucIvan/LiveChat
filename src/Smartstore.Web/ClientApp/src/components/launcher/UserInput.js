@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import SendIcon from './icons/SendIcon';
 import { useState } from 'react';
-import { postLauncher } from '../utils/HttpClient';
+import { postChat, postLauncher } from '../utils/HttpClient';
 import { useLocation } from 'react-router-dom';
 
 const UserInput = (props) => {
@@ -23,7 +23,7 @@ const UserInput = (props) => {
                 Message: text,
                 Type: 'text'
             }
-            const result = await postLauncher('chat/SendText', model, location);
+            const result = await postChat('SendText', model, location);
 
             if (result.IsValid) {
                 props.onSubmit(result.Data);
