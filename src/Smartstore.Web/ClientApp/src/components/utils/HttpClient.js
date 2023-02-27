@@ -57,7 +57,7 @@ export const post = async (sufixRoute, object, location) => {
     return jsonData;
 };
 
-export const postLauncher = async (sufixRoute, object, location, isInitCall) => {
+export const postLauncher = async (sufixRoute, visitorId, object, location, isInitCall) => {
     const url = `${prefixRoute}${sufixRoute}`;
 
     const response = await fetch(url, {
@@ -67,7 +67,7 @@ export const postLauncher = async (sufixRoute, object, location, isInitCall) => 
             "InitAuthorization": isInitCall ? JSON.stringify(object) : null,
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
-            "VisitorId": Storage.VisitorId, 
+            "VisitorId": visitorId, 
         },
         credentials: 'include',
         body: JSON.stringify(object)

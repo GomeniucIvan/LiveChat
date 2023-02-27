@@ -67,5 +67,20 @@ namespace Smartstore.Core.Companies.Domain
         }
 
         public DateTime CreatedOnUtc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message type identifier.
+        /// </summary>
+        public int SubmitTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the submit type.
+        /// </summary>
+        [NotMapped]
+        public MessageTypeEnum SubmitType
+        {
+            get => (MessageTypeEnum)SubmitTypeId;
+            set => SubmitTypeId = (int)value;
+        }
     }
 }

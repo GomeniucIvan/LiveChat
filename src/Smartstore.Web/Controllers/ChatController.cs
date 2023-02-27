@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.SignalR;
+using Smartstore.Core.Companies.Domain;
 using Smartstore.Core.Companies.Dtos;
 using Smartstore.Core.Companies.Proc;
 using Smartstore.Core.Data;
@@ -54,7 +55,7 @@ namespace Smartstore.Web.Controllers
         [HttpPost("LauncherMessages")]
         public async Task<IActionResult> Messages()
         {
-            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
+            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetVisitorList(companyId: CompanyId,
                 visitorId: VisitorId,
                 companyCustomerId: null,
                 visitorCall: true).ToList();
@@ -74,10 +75,9 @@ namespace Smartstore.Web.Controllers
                     VisitorId = VisitorId,
                     CompanyCustomerId = null,
                     CompanyId = CompanyId,
-                    Sent = true
                 };
 
-                var companyMessageId = _db.CompanyMessage_Insert(messageDto);
+                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageTypeId: MessageTypeEnum.Visitor);
                 if (companyMessageId.HasValue)
                 {
                     messageDto.Id = companyMessageId.GetValueOrDefault();

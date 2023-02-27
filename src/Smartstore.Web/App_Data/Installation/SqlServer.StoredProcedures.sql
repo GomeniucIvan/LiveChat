@@ -73,7 +73,8 @@ CREATE PROCEDURE [dbo].[CompanyMessage_Insert]
     @CompanyId INT,
 	@CompanyCustomerId INT,
 	@VisitorId INT,
-	@Message nvarchar(MAX))
+	@Message nvarchar(MAX),
+    @MessageTypeId INT)
 AS
 BEGIN
 
@@ -82,19 +83,21 @@ BEGIN
         CompanyCustomerId,
         VisitorId,
         CompanyId,
-		CreatedOnUTc)
+		CreatedOnUTc,
+        MessageTypeId)
     VALUES
          (@Message,                 -- Message - nvarchar(max)
           @CompanyCustomerId,       -- CompanyCustomerId - int
           @VisitorId,               -- VisitorId - int
           @CompanyId,               -- CompanyId - int
-          GETUTCDATE())             -- CreatedOnUTc - datetime
+          GETUTCDATE(),             -- CreatedOnUTc - datetime
+          @MessageTypeId)           -- MessageTypeId - int
 
      SELECT SCOPE_IDENTITY();
 END;
 GO
 
-CREATE PROCEDURE [dbo].[CompanyMessage_GetList]
+CREATE PROCEDURE [dbo].[CompanyMessage_GetVisitorList]
     (
     @CompanyId INT,
 	@VisitorId INT,

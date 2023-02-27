@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Smartstore.Core.Companies.Domain;
 using Smartstore.Core.Companies.Dtos;
 using Smartstore.Core.Companies.Proc;
 using Smartstore.Core.Data;
@@ -30,10 +31,18 @@ namespace Smartstore.Web.Controllers
 
         #region Methods
 
+        [HttpPost("Messages")]
+        public async Task<IActionResult> Messages()
+        {
+            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId).ToList();
+
+            return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
+        }
+
         [HttpPost("VisitorMessages")]
         public async Task<IActionResult> VisitorMessages()
         {
-            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
+            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetVisitorList(companyId: CompanyId,
                 visitorId: VisitorId,
                 companyCustomerId: CustomerId).ToList();
 
@@ -51,11 +60,10 @@ namespace Smartstore.Web.Controllers
                     Message = model.Message,
                     VisitorId = VisitorId,
                     CompanyCustomerId = CustomerId,
-                    CompanyId = CompanyId,
-                    Sent = false
+                    CompanyId = CompanyId
                 };
-
-                var companyMessageId = _db.CompanyMessage_Insert(messageDto);
+                //todo add private
+                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageTypeId: MessageTypeEnum.Customer);
 
                 if (companyMessageId.HasValue)
                 {
@@ -65,7 +73,6 @@ namespace Smartstore.Web.Controllers
                     //todo generic proc response, created int
                     return ApiJson(resultModel.Success(messageDto), HttpContext);
                 }
-
             }
 
             resultModel.IsValid = false;

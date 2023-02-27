@@ -3,7 +3,7 @@ import TestArea from './TestArea';
 import Header from './Header';
 import Footer from './Footer';
 import monsterImgUrl from "./assets/monster.png";
-import { postLauncher } from "../utils/HttpClient";
+import { postChat } from "../utils/HttpClient";
 import './assets/styles'
 
 const Home = (props) => {
@@ -15,7 +15,7 @@ const Home = (props) => {
     useEffect(() => {
         const PopulateComponent = async () => {
 
-            let response = await postLauncher(`Messages`);
+            let response = await postChat(`Messages`);
 
             if (response && response.IsValid) {
                 setMessageList(response.Data);

@@ -29,7 +29,7 @@ const DetailsBody = (props) => {
         });
 
         const PopulateComponent = async () => {
-            let response = await postLauncher('VisitorMessages', null);
+            let response = await postLauncher('VisitorMessages', /*visitorId*/ props.VisitorId, /*model*/ null);
 
             if (response && response.IsValid) {
                 setMessageList(response.Data);
