@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
+    <div id="chat">
+    </div>
+    
+<script>
+        //todo to separated file
+
+        $.fn.liveChat = function (options) {
+            const appendToId = this.attr('id');
+
+            //default options
+            var defaults = {
+                key: ''
+                //colors etc..
+            };
+
+            //Variables
+            const settings = $.extend(defaults, options);
+                
+            const settingsString = JSON.stringify(settings);
+
+            // Create a new iframe element using jQuery
+            var $iframe = $('<iframe>');
+
+            // Set the src attribute of the iframe to the desired URL
+            $iframe.attr('src', `https://localhost:44442/widget/${settings.key}?settings=${settingsString}`);
+
+            // Add any other desired attributes to the iframe (e.g., width, height, etc.)
+            $iframe.css('position', 'absolute');
+            $iframe.css('border', 'none');
+            $iframe.css('width', '100%');
+            $iframe.css('height', '100%');
+            $iframe.css('top', '0');
+            $iframe.css('left', '0');
+
+            // Append the iframe to an existing element on the page (e.g., the body element)
+            $(`#${appendToId}`).append($iframe);
+        };
+    </script>
+
+<script>
+        $('#chat').liveChat({
+            key: 'ASDZXC-bmd1234',
+            visitorId: '1'
+        });
+    </script>
+</body>
+</html>
