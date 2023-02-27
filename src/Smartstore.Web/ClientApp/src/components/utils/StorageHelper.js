@@ -4,21 +4,21 @@ let widgetCompanyId = '';
 let widgetVisitorId = '';
 
 export const Storage = {
-    CompanyId: function () {
+    get CompanyId() {
         if (!isNullOrEmpty(widgetCompanyId)) {
             return widgetCompanyId;
         }
 
         return localStorage.getItem('companyId');
     },
-    VisitorId: function () {
+    get VisitorId() {
         return widgetVisitorId;
     },
-    SetCompanyId: function (companyId) {
+    SetCompanyId: (companyId) => {
         widgetCompanyId = companyId;
         return;
     },
-    SetVisitorId: function (visitorId) {
+    SetVisitorId: (visitorId) => {
         widgetVisitorId = visitorId;
         return;
     }

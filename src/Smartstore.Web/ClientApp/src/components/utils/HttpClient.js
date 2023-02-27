@@ -14,7 +14,6 @@ export const get = async (sufixRoute, location) => {
         },
         credentials: 'include'
     });
-    console.log(response);
 
     const jsonData = await response.json();
 
@@ -67,10 +66,11 @@ export const postLauncher = async (sufixRoute, object, location, isInitCall) => 
         headers: {
             "Content-Type": "application/json",
             "InitAuthorization": isInitCall ? JSON.stringify(object) : null,
-            //"CompanyId": Storage.CompanyId, 
-            //"VisitorId": Storage.VisitorId, 
+            'Authorization': localStorage.getItem('access_token'),
+            'RefreshToken': localStorage.getItem('refresh_token'),
+            "VisitorId": Storage.VisitorId, 
         },
-        //credentials: 'include',
+        credentials: 'include',
         body: JSON.stringify(object)
     });
 

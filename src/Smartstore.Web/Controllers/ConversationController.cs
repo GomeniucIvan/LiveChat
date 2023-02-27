@@ -50,7 +50,7 @@ namespace Smartstore.Web.Controllers
                 var messageDto = new CompanyMessageDto()
                 {
                     Message = model.Message,
-                    VisitorId = null,
+                    VisitorId = model.VisitorId,
                     CompanyCustomerId = CustomerId,
                     CompanyId = CompanyId,
                     Sent = false
