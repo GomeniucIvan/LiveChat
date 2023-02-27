@@ -47,14 +47,14 @@ namespace Smartstore.Core.Companies.Domain
         /// </summary>
         public bool Deleted { get; set; }
 
-        private ICollection<CompanyGuestCustomer> _companyGuestCustomers;
+        private ICollection<Visitor> _visitors;
         /// <summary>
         /// Gets or sets the entries of company guests.
         /// </summary>
-        public ICollection<CompanyGuestCustomer> CompanyGuestCustomers
+        public ICollection<Visitor> Visitors
         {
-            get => _companyGuestCustomers ?? LazyLoader.Load(this, ref _companyGuestCustomers) ?? (_companyGuestCustomers ??= new HashSet<CompanyGuestCustomer>());
-            protected set => _companyGuestCustomers = value;
+            get => _visitors ?? LazyLoader.Load(this, ref _visitors) ?? (_visitors ??= new HashSet<Visitor>());
+            protected set => _visitors = value;
         }
 
         private ICollection<CompanyCustomer> _companyCustomers;

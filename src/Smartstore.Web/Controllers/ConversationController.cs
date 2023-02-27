@@ -4,7 +4,6 @@ using Smartstore.Core.Companies.Proc;
 using Smartstore.Core.Data;
 using Smartstore.Web.Api;
 using Smartstore.Web.Models.Conversation;
-using Smartstore.Web.Models.Laucher;
 using Smartstore.Web.Models.System;
 
 namespace Smartstore.Web.Controllers
@@ -29,14 +28,14 @@ namespace Smartstore.Web.Controllers
 
         #endregion
 
-        #region MyRegion
+        #region Methods
 
         [HttpPost("Messages")]
         public async Task<IActionResult> Messages()
         {
             // todo change
             IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
-                companyGuestCustomerId: null,
+                visitorId: null,
                 companyCustomerId: CustomerId).ToList();
 
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
@@ -51,7 +50,7 @@ namespace Smartstore.Web.Controllers
                 var messageDto = new CompanyMessageDto()
                 {
                     Message = model.Message,
-                    CompanyGuestCustomerId = null,
+                    VisitorId = null,
                     CompanyCustomerId = CustomerId,
                     CompanyId = CompanyId,
                     Sent = false
@@ -62,7 +61,7 @@ namespace Smartstore.Web.Controllers
                 if (companyMessageId.HasValue)
                 {
                     messageDto.Id = companyMessageId.GetValueOrDefault();
-                    await _hubContext.Clients.All.SendAsync($"guest_{messageDto.CompanyId}_{messageDto.CompanyGuestCustomerId}_new_message", messageDto);
+                    await _hubContext.Clients.All.SendAsync($"visitor_{messageDto.CompanyId}_{messageDto.VisitorId}_new_message", messageDto);
                     await _hubContext.Clients.All.SendAsync($"company_{messageDto.CompanyId}_new_message", messageDto);
                     //todo generic proc response, created int
                     return ApiJson(resultModel.Success(messageDto), HttpContext);
@@ -77,7 +76,7 @@ namespace Smartstore.Web.Controllers
         [HttpPost("Typing")]
         public async Task<IActionResult> Typing([FromBody] TypingModel model)
         {
-            await _hubContext.Clients.All.SendAsync($"company_{CompanyId}_{model.CompanyGuestCustomerId}_typing");
+            await _hubContext.Clients.All.SendAsync($"company_{CompanyId}_{model.VisitorId}_typing");
             return ApiJson(null, HttpContext);
         }
 

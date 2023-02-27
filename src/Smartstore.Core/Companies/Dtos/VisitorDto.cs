@@ -1,6 +1,6 @@
 ﻿namespace Smartstore.Core.Companies.Dtos;
 
-public class CompanyGuestCustomerDto
+public class VisitorDto
 {
     public int Id { get; set; }
 }

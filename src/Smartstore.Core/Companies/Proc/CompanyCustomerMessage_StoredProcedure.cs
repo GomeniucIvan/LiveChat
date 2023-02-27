@@ -9,20 +9,20 @@ namespace Smartstore.Core.Companies.Proc
     {
         public static IList<CompanyMessageDto> CompanyMessage_GetList(this SmartDbContext db,
             int companyId,
-            int? companyGuestCustomerId,
+            int? visitorId,
             int? companyCustomerId,
-            bool guestCall = false)
+            bool visitorCall = false)
         {
             var pCompanyIdDbParameter = db.DataProvider.CreateIntParameter("CompanyId", companyId);
-            var pCompanyGuestCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyGuestCustomerId", companyGuestCustomerId);
+            var pVisitorIdDbParameter = db.DataProvider.CreateIntParameter("VisitorId", visitorId);
             var pCompanyCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyCustomerId", companyCustomerId);
-            var pGuestCallDbParameter = db.DataProvider.CreateBooleanParameter("GuestCall", guestCall);
+            var pVisitorCallDbParameter = db.DataProvider.CreateBooleanParameter("VisitorCall", visitorCall);
 
             return db.ExecStoreProcedure<CompanyMessageDto>($"{nameof(CompanyMessage)}_GetList",
                 pCompanyIdDbParameter,
-                pCompanyGuestCustomerIdDbParameter,
+                pVisitorIdDbParameter,
                 pCompanyCustomerIdDbParameter,
-                pGuestCallDbParameter).ToList();
+                pVisitorCallDbParameter).ToList();
         }
 
         public static int? CompanyMessage_Insert(this SmartDbContext db,
@@ -30,13 +30,13 @@ namespace Smartstore.Core.Companies.Proc
         {
             var pCompanyIdDbParameter = db.DataProvider.CreateIntParameter("CompanyId", model.CompanyId);
             var pCompanyCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyCustomerId", model.CompanyCustomerId);
-            var pCompanyGuestCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyGuestCustomerId", model.CompanyGuestCustomerId);
+            var pVisitorIdDbParameter = db.DataProvider.CreateIntParameter("VisitorId", model.VisitorId);
             var pMessageDbParameter = db.DataProvider.CreateParameter("Message", model.Message);
 
             return db.ExecStoreProcedure<int?>($"{nameof(CompanyMessage)}_Insert",
                 pCompanyIdDbParameter,
                 pCompanyCustomerIdDbParameter,
-                pCompanyGuestCustomerIdDbParameter,
+                pVisitorIdDbParameter,
                 pMessageDbParameter).FirstOrDefault();
         }
     }

@@ -15,35 +15,35 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE [dbo].[CompanyGuestCustomer_CreateAndOrGetDetails]
+CREATE PROCEDURE [dbo].[Visitor_CreateAndOrGetDetails]
      (
     @CompanyId INT,
 	@UniqueId NVARCHAR(MAX),
 	@Guid NVARCHAR(36))
 AS
 BEGIN
-    DECLARE @companyGuestCustomerId INT;
+    DECLARE @visitorId INT;
 
     IF EXISTS (SELECT 1
-               FROM   dbo.CompanyGuestCustomer cgc WITH(NOLOCK)
-               WHERE  cgc.CompanyId = @CompanyId
-                      AND cgc.Deleted = 0
-                      AND ((ISNULL(@UniqueId, '') <> '' AND cgc.CustomerUniqueId = @UniqueId)
-                           OR (ISNULL(@UniqueId, '') <> '' OR (ISNULL(@Guid, '') <> '' AND cgc.Guid = @Guid))))
+               FROM   dbo.Visitor v WITH(NOLOCK)
+               WHERE  v.CompanyId = @CompanyId
+                      AND v.Deleted = 0
+                      AND ((ISNULL(@UniqueId, '') <> '' AND v.UniqueId = @UniqueId)
+                           OR (ISNULL(@UniqueId, '') <> '' OR (ISNULL(@Guid, '') <> '' AND v.Guid = @Guid))))
     BEGIN
-        SET @companyGuestCustomerId = (SELECT TOP 1 cgc.Id
-                                       FROM   dbo.CompanyGuestCustomer cgc WITH(NOLOCK)
-                                       WHERE  cgc.CompanyId = @CompanyId
-                                              AND cgc.Deleted = 0
-                                              AND ((ISNULL(@UniqueId, '') <> '' AND cgc.CustomerUniqueId = @UniqueId)
+        SET @visitorId = (SELECT TOP 1 v.Id
+                                       FROM   dbo.Visitor v WITH(NOLOCK)
+                                       WHERE  v.CompanyId = @CompanyId
+                                              AND v.Deleted = 0
+                                              AND ((ISNULL(@UniqueId, '') <> '' AND v.UniqueId = @UniqueId)
                                                    OR (ISNULL(@UniqueId, '') <> ''
-                                                       OR (ISNULL(@Guid, '') <> '' AND cgc.Guid = @Guid))));
+                                                       OR (ISNULL(@Guid, '') <> '' AND v.Guid = @Guid))));
     END;
     ELSE
     BEGIN
-        INSERT INTO dbo.CompanyGuestCustomer
+        INSERT INTO dbo.Visitor
         (   Guid,
-            CustomerUniqueId,
+            UniqueId,
             Deleted,
             CompanyId)
         VALUES
@@ -53,18 +53,18 @@ BEGIN
               @CompanyId      -- CompanyId - int
             );
 
-        SET @companyGuestCustomerId = SCOPE_IDENTITY();
+        SET @visitorId = SCOPE_IDENTITY();
     END;
 
-    SELECT cgc.Id, 
-           cgc.Guid, 
-           cgc.CustomerUniqueId, 
-           cgc.Deleted, 
-           cgc.CompanyId
+    SELECT v.Id, 
+           v.Guid, 
+           v.UniqueId, 
+           v.Deleted, 
+           v.CompanyId
 
-    FROM   dbo.CompanyGuestCustomer cgc WITH(NOLOCK)
-    WHERE  cgc.Id = @companyGuestCustomerId 
-           AND cgc.CompanyId = @CompanyId;
+    FROM   dbo.Visitor v WITH(NOLOCK)
+    WHERE  v.Id = @visitorId 
+           AND v.CompanyId = @CompanyId;
 END;
 GO
 
@@ -72,7 +72,7 @@ CREATE PROCEDURE [dbo].[CompanyMessage_Insert]
      (
     @CompanyId INT,
 	@CompanyCustomerId INT,
-	@CompanyGuestCustomerId INT,
+	@VisitorId INT,
 	@Message nvarchar(MAX))
 AS
 BEGIN
@@ -80,13 +80,13 @@ BEGIN
     INSERT INTO dbo.CompanyMessage
     (   Message,
         CompanyCustomerId,
-        CompanyGuestCustomerId,
+        VisitorId,
         CompanyId,
 		CreatedOnUTc)
     VALUES
          (@Message,                 -- Message - nvarchar(max)
           @CompanyCustomerId,       -- CompanyCustomerId - int
-          @CompanyGuestCustomerId,  -- CompanyGuestCustomerId - int
+          @VisitorId,               -- VisitorId - int
           @CompanyId,               -- CompanyId - int
           GETUTCDATE())             -- CreatedOnUTc - datetime
 
@@ -97,23 +97,23 @@ GO
 CREATE PROCEDURE [dbo].[CompanyMessage_GetList]
     (
     @CompanyId INT,
-	@CompanyGuestCustomerId INT,
+	@VisitorId INT,
 	@CompanyCustomerId INT,
-	@GuestCall BIT)
+	@VisitorCall BIT)
 AS
 BEGIN
     SELECT cm.Id,
            cm.Message,
            cm.CompanyCustomerId,
-           cm.CompanyGuestCustomerId,
+           cm.VisitorId,
            cm.CompanyId,
            cm.CreatedOnUtc,
-           CASE WHEN ISNULL(cm.CompanyCustomerId, '') = '' AND @GuestCall = 1 THEN
+           CASE WHEN ISNULL(cm.CompanyCustomerId, '') = '' AND @VisitorCall = 1 THEN
                     CAST(1 AS BIT)
            ELSE CAST(0 AS BIT)END AS Sent
 
     FROM   dbo.CompanyMessage cm WITH(NOLOCK)
-    WHERE  (ISNULL(cm.CompanyGuestCustomerId, 0) = 0 OR cm.CompanyGuestCustomerId = @CompanyGuestCustomerId)
+    WHERE  (ISNULL(cm.VisitorId, 0) = 0 OR cm.VisitorId = @VisitorId)
            --AND (ISNULL(cm.CompanyCustomerId, 0) = 0 OR cm.CompanyCustomerId = @CompanyCustomerId)
            AND cm.CompanyId = @CompanyId;
 END;

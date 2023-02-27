@@ -6,7 +6,7 @@ import Details from "./Details";
 const Index = (props) => {
     const [loading, setLoading] = useState(false);
 
-    const companyGuestCustomer = {
+    const visitor = {
         Id: 1,
         FirstName: 'test',
         LastName: 'last',
@@ -43,14 +43,14 @@ const Index = (props) => {
                                 <span className='current-user-details'>
                                     <span>
                                         <div className='current-user-initials'>
-                                            {companyGuestCustomer.FullName}
+                                            {visitor.FullName}
                                         </div>
                                         <div className='current-user-description'>
-                                            {companyGuestCustomer.Description}
+                                            {visitor.Description}
                                         </div>
                                     </span>
                                     <span>
-                                        {companyGuestCustomer.LastMessageIncomeTimeAgoDisplay}
+                                        {visitor.LastMessageIncomeTimeAgoDisplay}
                                     </span>
                                 </span>
                             </div>
@@ -59,13 +59,13 @@ const Index = (props) => {
 
                             </div>
                             <div className='sent-text'>
-                                {companyGuestCustomer.LastMessage}
+                                {visitor.LastMessage}
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {<Details companyGuestCustomer={companyGuestCustomer} />}
+                {<Details visitor={visitor} />}
 
                 <div className='conversation-details-summary'>
 

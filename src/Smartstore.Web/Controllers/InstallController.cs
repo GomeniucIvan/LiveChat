@@ -1,4 +1,6 @@
-﻿using NuGet.Protocol;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
+using NuGet.Protocol;
 using Smartstore.Core.Installation;
 using Smartstore.Threading;
 using Smartstore.Web.Api;
@@ -6,7 +8,9 @@ using Smartstore.Web.Models.System;
 
 namespace Smartstore.Web.Controllers
 {
-    public class InstallController : WebApiController
+    [ODataRouteComponent("odata/v1/")]
+    [Route("odata/v1/")]
+    public class InstallController : SmartController
     {
         private readonly IInstallationService _installService;
         private readonly IHostApplicationLifetime _hostApplicationLifetime;

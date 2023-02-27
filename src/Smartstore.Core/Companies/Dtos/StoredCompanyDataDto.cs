@@ -2,6 +2,6 @@
 
 public class StoredCompanyDataDto
 {
-    public CompanyGuestCustomerDto CompanyGuestCompany{ get; set; }
+    public VisitorDto Visitor { get; set; }
     public CompanyDto Company { get; set; }
 }

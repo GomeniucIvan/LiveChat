@@ -37,17 +37,17 @@ namespace Smartstore.Core.Companies.Domain
         /// <summary>
         /// Gets or sets the company guest customer identifier.
         /// </summary>
-        public int? CompanyGuestCustomerId { get; set; }
+        public int? VisitorId { get; set; }
 
-        private CompanyGuestCustomer _companyGuestCustomer;
+        private Visitor _visitor;
         /// <summary>
         /// Gets or sets the company guest customer record.
         /// </summary>
-        [ForeignKey(nameof(CompanyGuestCustomerId))]
-        public CompanyGuestCustomer CompanyGuestCustomer
+        [ForeignKey(nameof(VisitorId))]
+        public Visitor Visitor
         {
-            get => _companyGuestCustomer ?? LazyLoader.Load(this, ref _companyGuestCustomer);
-            set => _companyGuestCustomer = value;
+            get => _visitor ?? LazyLoader.Load(this, ref _visitor);
+            set => _visitor = value;
         }
 
         /// <summary>

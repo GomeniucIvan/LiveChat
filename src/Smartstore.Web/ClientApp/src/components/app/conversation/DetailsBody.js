@@ -24,20 +24,6 @@ const DetailsBody = (props) => {
         });
 
         connection.on(`company_${Storage.CompanyId}_new_message`, function (message) {
-            //const incMessage = {
-            //    Id: message.id,
-            //    CompanyCustomerId: message.companyCustomerId,
-            //    CompanyGuestCustomerId: message.companyGuestCustomerId,
-            //    CompanyId: message.companyId,
-            //    CreatedOnUtc: message.createdOnUtc,
-            //    IconUrl: message.iconUrl,
-            //    Message: message.message,
-            //    Sent: message.sent
-            //}
-
-            //setMessageList([...messageArrayList, incMessage]);
-            //messageArrayList = messageList;
-
             PopulateComponent();
             scrollMessageList();
         });

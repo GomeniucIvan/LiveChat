@@ -7,33 +7,32 @@ using Newtonsoft.Json;
 
 namespace Smartstore.Core.Companies.Domain
 {
-    internal class CompanyGuestCustomerMap : IEntityTypeConfiguration<CompanyGuestCustomer>
+    internal class VisitorMap : IEntityTypeConfiguration<Visitor>
     {
-        public void Configure(EntityTypeBuilder<CompanyGuestCustomer> builder)
+        public void Configure(EntityTypeBuilder<Visitor> builder)
         {
             // Globally exclude soft-deleted entities from all queries.
             builder.HasQueryFilter(c => !c.Deleted);
 
             builder.HasOne(c => c.Company)
-                .WithMany(c => c.CompanyGuestCustomers)
+                .WithMany(c => c.Visitors)
                 .HasForeignKey(c => c.CompanyId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
 
-    public partial class CompanyGuestCustomer : BaseEntity, ISoftDeletable
+    public partial class Visitor : BaseEntity, ISoftDeletable
     {
-        public CompanyGuestCustomer()
+        public Visitor()
         {
         }
 
         [SuppressMessage("CodeQuality", "IDE0051:Remove unused private member.", Justification = "Required for EF lazy loading")]
-        private CompanyGuestCustomer(ILazyLoader lazyLoader)
+        private Visitor(ILazyLoader lazyLoader)
             : base(lazyLoader)
         {
         }
 
-        
         /// <summary>
         /// Gets or sets the Guid
         /// </summary>
@@ -43,7 +42,7 @@ namespace Smartstore.Core.Companies.Domain
         /// <summary>
         /// Gets or sets company unique id param
         /// </summary>
-        public string CustomerUniqueId { get; set; }
+        public string UniqueId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the guest has been deleted

@@ -44,7 +44,7 @@ const DetailsFooter = (props) => {
 
     const customerTyping = async () => {
         const model = {
-            CompanyGuestCustomerId: props.companyGuestCustomer.Id,
+            VisitorId: props.visitor.Id,
         }
 
         const result = await postLauncher('Typing', model, location);

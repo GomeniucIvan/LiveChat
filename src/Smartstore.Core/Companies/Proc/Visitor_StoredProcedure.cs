@@ -5,9 +5,9 @@ using Smartstore.Core.Data.Bootstrapping;
 
 namespace Smartstore.Core.Companies.Proc;
 
-public static class CompanyGuestCustomer_StoredProcedure
+public static class Visitor_StoredProcedure
 {
-    public static CompanyGuestCustomerDto CompanyGuestCustomer_CreateAndOrGetDetails(this SmartDbContext db,
+    public static VisitorDto Visitor_CreateAndOrGetDetails(this SmartDbContext db,
         int companyId,
         string uniqueId,
         string guid)
@@ -21,7 +21,7 @@ public static class CompanyGuestCustomer_StoredProcedure
         var pUniqueIdParameter = db.DataProvider.CreateParameter("UniqueId", uniqueId);
         var pGuidParameter = db.DataProvider.CreateParameter("Guid", guid);
 
-        return db.ExecStoreProcedure<CompanyGuestCustomerDto>($"{nameof(CompanyGuestCustomer)}_CreateAndOrGetDetails",
+        return db.ExecStoreProcedure<VisitorDto>($"{nameof(Visitor)}_CreateAndOrGetDetails",
             pCompanyIdDbParameter,
             pUniqueIdParameter,
             pGuidParameter).FirstOrDefault();

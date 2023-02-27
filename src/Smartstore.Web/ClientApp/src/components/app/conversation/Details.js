@@ -6,9 +6,9 @@ const Details = (props) => {
     
     return (
         <div className='conversation-details-wrap'>
-            {<DetailsHeader companyGuestCustomer={props.companyGuestCustomer} />}
-            {<DetailsBody companyGuestCustomer={props.companyGuestCustomer} />}
-            {<DetailsFooter companyGuestCustomer={props.companyGuestCustomer} />}
+            {<DetailsHeader visitor={props.visitor} />}
+            {<DetailsBody visitor={props.visitor} />}
+            {<DetailsFooter visitor={props.visitor} />}
         </div>
     )
 }

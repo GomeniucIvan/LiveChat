@@ -55,9 +55,9 @@ namespace Smartstore.Web.Controllers
         public async Task<IActionResult> Messages()
         {
             IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
-                companyGuestCustomerId: VisitorId,
+                visitorId: VisitorId,
                 companyCustomerId: null,
-                guestCall: true).ToList();
+                visitorCall: true).ToList();
 
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
         }
@@ -71,7 +71,7 @@ namespace Smartstore.Web.Controllers
                 var messageDto = new CompanyMessageDto()
                 {
                     Message = model.Message,
-                    CompanyGuestCustomerId = VisitorId,
+                    VisitorId = VisitorId,
                     CompanyCustomerId = null,
                     CompanyId = CompanyId,
                     Sent = true

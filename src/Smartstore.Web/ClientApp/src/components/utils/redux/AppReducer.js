@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { companyGuestCostumerReducer } from './CompanyGuestCustomerReducer';
+import { visitorReducer } from './VisitorReducer';
 
 export const appReducer = combineReducers( {
-    companyGuest: companyGuestCostumerReducer,
+    visitor: visitorReducer,
 })

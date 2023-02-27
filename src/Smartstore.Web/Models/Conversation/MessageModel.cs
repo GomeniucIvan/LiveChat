@@ -7,6 +7,6 @@
 
     public class TypingModel
     {
-        public int CompanyGuestCustomerId { get; set; }
+        public int VisitorId { get; set; }
     }
 }

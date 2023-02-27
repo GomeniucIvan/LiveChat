@@ -55,7 +55,7 @@ const LauncherWrapper = (props) => {
             console.log('Hub Error' + err);
         });
 
-        connection.on(`guest_${Storage.CompanyId}_${Storage.VisitorId}_new_message`, function (message) {
+        connection.on(`visitor_${Storage.CompanyId}_${Storage.VisitorId}_new_message`, function (message) {
             PopulateComponent();
         });
 

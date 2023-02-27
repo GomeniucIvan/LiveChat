@@ -14,8 +14,10 @@ export const get = async (sufixRoute, location) => {
         },
         credentials: 'include'
     });
+    console.log(response);
 
     const jsonData = await response.json();
+
     redirectToLogin(/*location*/ location, /*response*/ jsonData, /*forceRedirect*/ null);
     return jsonData;
 };
