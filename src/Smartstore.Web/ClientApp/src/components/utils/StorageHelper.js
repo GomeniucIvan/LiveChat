@@ -1,7 +1,6 @@
 import { isNullOrEmpty } from "./Utils";
 
-let widgetCompanyId = '';
-let widgetVisitorId = '';
+var widgetCompanyId = '';
 
 export const Storage = {
     get CompanyId() {
@@ -11,15 +10,8 @@ export const Storage = {
 
         return localStorage.getItem('companyId');
     },
-    get VisitorId() {
-        return widgetVisitorId;
-    },
     SetCompanyId: (companyId) => {
         widgetCompanyId = companyId;
-        return;
-    },
-    SetVisitorId: (visitorId) => {
-        widgetVisitorId = visitorId;
         return;
     }
 }

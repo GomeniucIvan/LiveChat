@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { postChat, postLauncher } from '../utils/HttpClient';
+import { postChat } from '../utils/HttpClient';
 import Launcher from './Launcher';
 import { useLocation } from 'react-router-dom';
 import { Storage } from '../utils/StorageHelper';
@@ -8,13 +8,14 @@ let isInitCall = true;
 
 let messageArrayList = []; //todo ?! setMessageList reload component!!
 
-const LauncherWrapper = (props) => {
+const Widget = (props) => {
     let [messageList, setMessageList] = useState([]);
     let [newMessagesCount, setNewMessagesCount] = useState(0);
     let [isOpen, setIsOpen] = useState(false);
     let [loading, setLoading] = useState(true);
     const msgListScrollRef = useRef(null);
     const location = useLocation();
+    let visitorId = null;
 
     useEffect(() => {
         const PopulateComponent = async () => {
@@ -23,18 +24,17 @@ const LauncherWrapper = (props) => {
                 isInitCall = false;
                 const searchParams = new URLSearchParams(location.search);
                 const settingsString = searchParams.get('settings');
-                var data = JSON.parse(settingsString);
-                let response = await postChat(`VisitorData`, data, /*location*/ null, /*isInitCall*/ true);
+                const data = JSON.parse(settingsString);
+                visitorId = data.visitorId;
+                let response = await postChat(`Data`, data, /*location*/ null, /*isInitCall*/ true);
 
                 if (response && response.IsValid) {
                     const companyVisitorInfo = response.Data;
-
-                    Storage.SetCompanyId(companyVisitorInfo.CompanyId)
-                    Storage.SetVisitorId(companyVisitorInfo.VisitorId)
+                    Storage.SetCompanyId(companyVisitorInfo.CompanyId);
                 }
             }
 
-            let response = await postChat(`LauncherMessages`, null);
+            let response = await postChat(`Messages`, null);
             if (response && response.IsValid) {
                 setMessageList(response.Data);
                 messageArrayList = response.Data;
@@ -55,12 +55,12 @@ const LauncherWrapper = (props) => {
             console.log('Hub Error' + err);
         });
 
-        connection.on(`visitor_${Storage.CompanyId}_${Storage.VisitorId}_new_message`, function (message) {
+        connection.on(`visitor_${Storage.CompanyId}_${visitorId}_new_message`, function (message) {
             PopulateComponent();
         });
 
-        connection.on(`company_${Storage.CompanyId}_${Storage.VisitorId}_typing`, function (message) {
-
+        connection.on(`company_${Storage.CompanyId}_${visitorId}_typing`, function (message) {
+            
         });
     }, []);
 
@@ -104,4 +104,4 @@ const LauncherWrapper = (props) => {
     )
 }
 
-export default LauncherWrapper;
+export default Widget;

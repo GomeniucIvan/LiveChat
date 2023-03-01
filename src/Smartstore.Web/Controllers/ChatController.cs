@@ -34,8 +34,8 @@ namespace Smartstore.Web.Controllers
 
         #region Methods
 
-        [HttpPost("VisitorData")]
-        public async Task<IActionResult> InitVisitor()
+        [HttpPost("Data")]
+        public async Task<IActionResult> Data()
         {
             var company = _db.Company_GetDetails(companyId: null, companyKey: CompanyKey);
             if (company == null)
@@ -52,7 +52,7 @@ namespace Smartstore.Web.Controllers
             return ApiJson(new GenericApiModel<VisitorInitModel>().Success(model), HttpContext);
         }
 
-        [HttpPost("LauncherMessages")]
+        [HttpPost("Messages")]
         public async Task<IActionResult> Messages()
         {
             IList<CompanyMessageDto> messages = _db.CompanyMessage_GetVisitorList(companyId: CompanyId,
@@ -63,8 +63,8 @@ namespace Smartstore.Web.Controllers
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
         }
 
-        [HttpPost("SendText")]
-        public async Task<IActionResult> SendText([FromBody]LauncherMessageModel model)
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage([FromBody]LauncherMessageModel model)
         {
             var resultModel = new GenericApiModel<CompanyMessageDto>();
             if (model != null)

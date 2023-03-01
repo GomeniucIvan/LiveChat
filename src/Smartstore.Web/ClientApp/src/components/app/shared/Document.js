@@ -6,7 +6,7 @@ import Login from '../identity/Login';
 import Layout from './Layout';
 import { Loading } from '../../utils/Loading';
 import Install from './Install';
-import LauncherWrapper from '../../launcher/LauncherWrapper';
+import Widget from '../../launcher/Widget';
 
 
 const Document = () => {
@@ -74,7 +74,7 @@ const Document = () => {
     }
 
     if (isChatWidget) {
-        return <LauncherWrapper />
+        return <Widget />
     }
 
     return (

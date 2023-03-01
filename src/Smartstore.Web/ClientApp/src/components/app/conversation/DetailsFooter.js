@@ -52,7 +52,7 @@ const DetailsFooter = (props) => {
             Message: enteredCode
         };
 
-        const result = await postLauncher('SendText', /*visitorId*/ props.VisitorId, model, location);
+        const result = await postLauncher('SendMessage', /*visitorId*/ props.VisitorId, model, location);
         if (result.IsValid) {
             try {
                 //TypeError: $dialog.modal is not a function

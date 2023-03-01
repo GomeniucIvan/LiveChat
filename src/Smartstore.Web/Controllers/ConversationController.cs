@@ -49,8 +49,8 @@ namespace Smartstore.Web.Controllers
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
         }
 
-        [HttpPost("SendText")]
-        public async Task<IActionResult> SendText([FromBody]MessageModel model)
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage([FromBody]MessageModel model)
         {
             var resultModel = new GenericApiModel<CompanyMessageDto>();
             if (model != null)

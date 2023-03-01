@@ -23,7 +23,7 @@ const UserInput = (props) => {
                 Message: text,
                 Type: 'text'
             }
-            const result = await postChat('SendText', model, location);
+            const result = await postChat('SendMessage', model, location);
 
             if (result.IsValid) {
                 props.onSubmit(result.Data);

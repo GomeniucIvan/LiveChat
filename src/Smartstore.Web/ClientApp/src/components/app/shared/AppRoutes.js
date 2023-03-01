@@ -1,5 +1,5 @@
 import Index from '../../app/conversation/Index'
-import LauncherWrapper from '../../launcher/LauncherWrapper';
+import Widget from '../../launcher/Widget';
 import Install from './Install';
 
 const AppRoutes = [
@@ -14,7 +14,7 @@ const AppRoutes = [
     },
     {
         path: '/widget',
-        element: <LauncherWrapper />
+        element: <Widget />
     }
 ];
 

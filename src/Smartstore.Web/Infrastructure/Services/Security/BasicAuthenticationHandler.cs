@@ -88,7 +88,8 @@ namespace Smartstore.Web.Api.Security
                         return Failure(AccessDeniedReason.InvalidAuthorizationHeader);
                     }
 
-                    if (!string.IsNullOrEmpty(initAuthValue))
+                    if (!string.IsNullOrEmpty(initAuthValue) && string.IsNullOrEmpty(companyIdValue) &&
+                         string.IsNullOrEmpty(visitorIdValue))
                     {
                         try
                         {

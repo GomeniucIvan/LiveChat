@@ -64,7 +64,6 @@ export const postLauncher = async (sufixRoute, visitorId, object, location, isIn
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            "InitAuthorization": isInitCall ? JSON.stringify(object) : null,
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
             "VisitorId": visitorId, 
@@ -79,21 +78,21 @@ export const postLauncher = async (sufixRoute, visitorId, object, location, isIn
 };
 
 export const postChat = async (sufixRoute, object, location, isInitCall) => {
-    const url = `${prefixRoute}${sufixRoute}chat/`;
-
+    const url = `${prefixRoute}chat/${sufixRoute}`;
     const response = await fetch(url, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
+            "InitAuthorization": isInitCall ? JSON.stringify(object) : null,
             "CompanyId": Storage.CompanyId,
             "VisitorId": Storage.VisitorId,
         },
-        credentials: 'include',
+        //credentials: 'include',
         body: JSON.stringify(object)
     });
 
     const jsonData = await response.json();
-    redirectToLogin(/*location*/ location, /*response*/ jsonData, /*forceRedirect*/ null);
+
     return jsonData;
 };
 
