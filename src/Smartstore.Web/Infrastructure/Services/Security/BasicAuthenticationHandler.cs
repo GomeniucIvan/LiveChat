@@ -226,11 +226,23 @@ namespace Smartstore.Web.Api.Security
 
                 headers.CacheControl = "no-cache";
 
+                var visitorIdRaw = Request?.Headers[JwtClaimTypes.VisitorId];
+
                 var claims = new[]
                 {
                     new Claim(JwtClaimTypes.CustomerId, user.Id.ToString(), ClaimValueTypes.Integer32, ClaimsIssuer),
-                    new Claim(JwtClaimTypes.CompanyId, selectedCompanyIdString, ClaimValueTypes.Integer32, ClaimsIssuer)
+                    new Claim(JwtClaimTypes.CompanyId, selectedCompanyIdString, ClaimValueTypes.Integer32, ClaimsIssuer),
                 };
+
+                if (!visitorIdRaw.GetValueOrDefault().ToString().IsEmpty())
+                {
+                    claims = new[]
+                    {
+                        new Claim(JwtClaimTypes.CustomerId, user.Id.ToString(), ClaimValueTypes.Integer32, ClaimsIssuer),
+                        new Claim(JwtClaimTypes.CompanyId, selectedCompanyIdString, ClaimValueTypes.Integer32, ClaimsIssuer),
+                        new Claim(JwtClaimTypes.VisitorId, visitorIdRaw, ClaimValueTypes.Integer32, ClaimsIssuer),
+                    };
+                }
 
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);

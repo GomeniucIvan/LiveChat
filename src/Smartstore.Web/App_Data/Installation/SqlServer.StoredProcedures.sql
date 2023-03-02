@@ -122,6 +122,37 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE [dbo].[CompanyMessage_GetList]
+    (@CompanyId INT,
+     @PageSize INT)
+AS
+BEGIN
+    SELECT TOP (@PageSize) 
+        cm.Id,
+        cm.Message,
+        cm.CompanyCustomerId,
+        cm.VisitorId,
+        cm.CompanyId,
+        cm.CreatedOnUtc,
+        cm.MessageTypeId as MessageType,
+        c.FirstName + ' ' + c.LastName AS CustomerFullName,
+        ga.Value AS VisitorFullName,
+		v.UniqueId as VisitorUniqueId
+
+    FROM dbo.CompanyMessage cm WITH (NOLOCK)        
+    LEFT JOIN dbo.Visitor v WITH (NOLOCK) ON v.Id = cm.VisitorId
+    LEFT JOIN dbo.GenericAttribute ga WITH (NOLOCK) ON ga.EntityId = v.Id
+                                                   AND ga.KeyGroup = 'Visitor'
+                                                   AND ga.[Key] = 'FullName'
+    LEFT JOIN dbo.CompanyCustomer cc WITH (NOLOCK) ON cc.Id = cm.CompanyCustomerId AND cc.Deleted = 0 AND  cc.CompanyId = @CompanyId
+    LEFT JOIN dbo.Customer c WITH (NOLOCK) ON c.Id = cc.CustomerId AND c.Active = 1 
+    WHERE cm.CompanyId = @CompanyId	
+        
+    GROUP BY cm.VisitorId, cm.Id, cm.Message, cm.CompanyCustomerId, cm.VisitorId, cm.CompanyId, cm.CreatedOnUtc, cm.MessageTypeId, c.FirstName, c.LastName, ga.Value, v.UniqueId
+    ORDER BY cm.CreatedOnUtc DESC;
+END;
+GO
+
 CREATE PROCEDURE [dbo].[CompanyMessage_GetVisitorList]
     (
     @CompanyId INT,

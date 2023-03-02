@@ -36,6 +36,10 @@ const Index = (props) => {
         PopulateComponent();
     }, [])
 
+    function selectVisitor(visitorId) {
+        setVisitorId(visitorId);
+    };
+
     return (
         <>
             <section className='conversation-page'>
@@ -52,7 +56,7 @@ const Index = (props) => {
 
                         {messageList.map(message => {
                             return (
-                                <div className='conversation-item'>
+                                <div onClick={() => selectVisitor(message.VisitorId)} className='conversation-item' key={message.Id}>
                                     <div className='d-flex w-100'>
                                         <span className="current-user">
                                             <div className="user-thumbnail-box">

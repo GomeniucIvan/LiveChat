@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { AsideMenu } from './AsideMenu'
-import { AsideMenuItem } from './AsideMenuItem'
 import $ from 'jquery';
-import { T } from '../../../utils/Utils'
 
 const AsideDefault = () => {
     let aside = {

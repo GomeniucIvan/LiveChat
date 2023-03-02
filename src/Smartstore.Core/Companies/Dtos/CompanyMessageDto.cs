@@ -18,6 +18,7 @@ namespace Smartstore.Core.Companies.Dtos
         public string VisitorDescription { get; set; }
         public string CustomerFullName { get; set; }
         public MessageTypeEnum MessageType { get; set; }
+        public string VisitorUniqueId { get; set; }
 
         public string FullName
         {
@@ -25,7 +26,13 @@ namespace Smartstore.Core.Companies.Dtos
             {
                 if (MessageType == MessageTypeEnum.Visitor)
                 {
-                    return VisitorFullName;
+                    var fullName = VisitorFullName;
+                    if (fullName.IsEmpty())
+                    {
+                        fullName = $"Visitor {VisitorUniqueId}";
+                    }
+
+                    return fullName;
                 }
                 else
                 {

@@ -68,7 +68,7 @@ export const postLauncher = async (sufixRoute, visitorId, object, location, isIn
             'RefreshToken': localStorage.getItem('refresh_token'),
             "VisitorId": visitorId, 
         },
-        credentials: 'include',
+        //credentials: 'include',
         body: JSON.stringify(object)
     });
 

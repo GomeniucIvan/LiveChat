@@ -1,4 +1,4 @@
-import Index from '../../app/conversation/Index'
+import Messages from '../../app/conversation/Messages'
 import Widget from '../../launcher/Widget';
 import Install from './Install';
 
@@ -6,7 +6,7 @@ const AppRoutes = [
     {
         index: true,
         path: '/',
-        element: <Index />
+        element: <Messages />
     },
     {
         path: '/install',

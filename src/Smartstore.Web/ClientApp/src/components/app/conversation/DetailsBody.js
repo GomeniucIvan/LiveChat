@@ -4,13 +4,11 @@ import { isNullOrEmpty } from "../../utils/Utils";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { Loading } from "../../utils/Loading";
 import { Storage } from "../../utils/StorageHelper";
-import { useLocation } from "react-router-dom";
 
 const DetailsBody = (props) => {
     let [messageList, setMessageList] = useState([]);
     let [loading, setLoading] = useState(true);
     const scrollRef = useRef(null);
-    const location = useLocation();
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -29,7 +27,7 @@ const DetailsBody = (props) => {
         });
 
         const PopulateComponent = async () => {
-            let response = await postLauncher('VisitorMessages', /*visitorId*/ props.VisitorId, /*model*/ null);
+            let response = await postLauncher('VisitorMessages', /*visitorId*/ props.visitorId, /*model*/ null);
 
             if (response && response.IsValid) {
                 setMessageList(response.Data);
