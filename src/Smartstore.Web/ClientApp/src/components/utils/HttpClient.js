@@ -77,7 +77,7 @@ export const postLauncher = async (sufixRoute, visitorId, object, location, isIn
     return jsonData;
 };
 
-export const postChat = async (sufixRoute, object, location, isInitCall) => {
+export const postChat = async (sufixRoute, visitorId, object, isInitCall) => {
     const url = `${prefixRoute}chat/${sufixRoute}`;
     const response = await fetch(url, {
         method: 'POST',
@@ -85,7 +85,7 @@ export const postChat = async (sufixRoute, object, location, isInitCall) => {
             "Content-Type": "application/json",
             "InitAuthorization": isInitCall ? JSON.stringify(object) : null,
             "CompanyId": Storage.CompanyId,
-            "VisitorId": Storage.VisitorId,
+            "VisitorId": visitorId,
         },
         //credentials: 'include',
         body: JSON.stringify(object)

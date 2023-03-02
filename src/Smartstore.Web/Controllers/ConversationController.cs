@@ -63,7 +63,7 @@ namespace Smartstore.Web.Controllers
                     CompanyId = CompanyId
                 };
                 //todo add private
-                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageTypeId: MessageTypeEnum.Customer);
+                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageType: MessageTypeEnum.Customer);
 
                 if (companyMessageId.HasValue)
                 {

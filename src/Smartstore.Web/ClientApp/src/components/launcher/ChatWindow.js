@@ -1,7 +1,7 @@
 import React from 'react';
-import MessageList from './MessageList'
-import UserInput from './UserInput'
-import Header from './Header'
+import ChatMessageList from './MessageList'
+import ChatUserInput from './ChatUserInput'
+import ChatHeader from './ChatHeader'
 import { Loading } from './../utils/Loading'
 
 const ChatWindow = (props) => {
@@ -17,13 +17,13 @@ const ChatWindow = (props) => {
 
     return (
         <div className={classList.join(' ')}>
-            <Header
+            <ChatHeader
                 teamName={props.agentProfile.teamName}
                 imageUrl={props.agentProfile.imageUrl}
                 onClose={props.onClose}
             />
             {props.isOpen &&
-                <MessageList
+                <ChatMessageList
                     msgListScrollRef={props.msgListScrollRef}
                     messages={messageList}
                     imageUrl={props.agentProfile.imageUrl}
@@ -32,7 +32,7 @@ const ChatWindow = (props) => {
             {!props.isOpen &&
                 <Loading />
             }
-            <UserInput onSubmit={onGuestSendMessage.bind(this)} />
+            <ChatUserInput onSubmit={onGuestSendMessage.bind(this)} />
         </div>
     );
 }

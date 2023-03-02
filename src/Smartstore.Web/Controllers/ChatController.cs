@@ -77,7 +77,7 @@ namespace Smartstore.Web.Controllers
                     CompanyId = CompanyId,
                 };
 
-                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageTypeId: MessageTypeEnum.Visitor);
+                var companyMessageId = _db.CompanyMessage_Insert(messageDto, messageType: MessageTypeEnum.Visitor);
                 if (companyMessageId.HasValue)
                 {
                     messageDto.Id = companyMessageId.GetValueOrDefault();

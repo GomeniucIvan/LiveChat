@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import closeIcon from './assets/close-icon.png';
 
 
-class Header extends Component {
+class ChatHeader extends Component {
 
   render() {
     return (
@@ -17,4 +17,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default ChatHeader;

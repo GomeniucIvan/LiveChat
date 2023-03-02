@@ -40,13 +40,13 @@ namespace Smartstore.Core.Companies.Proc
 
         public static int? CompanyMessage_Insert(this SmartDbContext db,
             CompanyMessageDto model,
-            MessageTypeEnum messageTypeId)
+            MessageTypeEnum messageType)
         {
             var pCompanyIdDbParameter = db.DataProvider.CreateIntParameter("CompanyId", model.CompanyId);
             var pCompanyCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyCustomerId", model.CompanyCustomerId);
             var pVisitorIdDbParameter = db.DataProvider.CreateIntParameter("VisitorId", model.VisitorId);
             var pMessageDbParameter = db.DataProvider.CreateParameter("Message", model.Message);
-            var pMessageTypeIdDbParameter = db.DataProvider.CreateParameter("MessageTypeId", (int)messageTypeId);
+            var pMessageTypeIdDbParameter = db.DataProvider.CreateIntParameter("MessageTypeId", (int)messageType);
 
             return db.ExecStoreProcedure<int?>($"{nameof(CompanyMessage)}_Insert",
                 pCompanyIdDbParameter,

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { postChat } from '../utils/HttpClient';
-import Launcher from './Launcher';
+import Chat from './Chat';
 import { useLocation } from 'react-router-dom';
 import { Storage } from '../utils/StorageHelper';
+import { useDispatch } from 'react-redux';
+
 let isInitCall = true;
 
 let messageArrayList = []; //todo ?! setMessageList reload component!!
@@ -15,6 +17,7 @@ const Widget = (props) => {
     let [loading, setLoading] = useState(true);
     const msgListScrollRef = useRef(null);
     const location = useLocation();
+    const dispatch = useDispatch();
     let visitorId = null;
 
     useEffect(() => {
@@ -26,7 +29,12 @@ const Widget = (props) => {
                 const settingsString = searchParams.get('settings');
                 const data = JSON.parse(settingsString);
                 visitorId = data.visitorId;
-                let response = await postChat(`Data`, data, /*location*/ null, /*isInitCall*/ true);
+
+                dispatch({ type: 'VISITOR_ID', payload: visitorId });
+                let response = await postChat(`Data`,
+                    /*visitorId*/ visitorId,
+                    /*object*/ data,
+                    /*isInitCall*/ true);
 
                 if (response && response.IsValid) {
                     const companyVisitorInfo = response.Data;
@@ -34,7 +42,8 @@ const Widget = (props) => {
                 }
             }
 
-            let response = await postChat(`Messages`, null);
+            let response = await postChat(`Messages`,
+                /*visitorId*/ visitorId);
             if (response && response.IsValid) {
                 setMessageList(response.Data);
                 messageArrayList = response.Data;
@@ -88,7 +97,7 @@ const Widget = (props) => {
 
     return (
         <div className="app-laucher-container">
-            <Launcher
+            <Chat
                 agentProfile={{
                     teamName: 'react-live-chat',
                     imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'

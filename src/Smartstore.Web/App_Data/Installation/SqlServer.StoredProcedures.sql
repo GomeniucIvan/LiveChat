@@ -69,31 +69,56 @@ END;
 GO
 
 CREATE PROCEDURE [dbo].[CompanyMessage_Insert]
-     (
+(
     @CompanyId INT,
-	@CompanyCustomerId INT,
-	@VisitorId INT,
-	@Message nvarchar(MAX),
-    @MessageTypeId INT)
+    @CompanyCustomerId INT,
+    @VisitorUniqueId INT,
+    @Message NVARCHAR(MAX),
+    @MessageTypeId INT
+)
 AS
 BEGIN
+    DECLARE @visitorId INT = (SELECT TOP 1 v.Id 
+								FROM Visitor v WITH(NOLOCK) 
+								WHERE v.UniqueId = @VisitorUniqueId
+									AND v.Deleted = 0
+									AND v.CompanyId = @CompanyId
+								);
 
-    INSERT INTO dbo.CompanyMessage
-    (   Message,
+    IF ISNULL(@visitorId,0) = 0
+    BEGIN
+        INSERT INTO Visitor (
+            Guid,
+            UniqueId,
+            Deleted,
+            CompanyId
+        ) VALUES (
+            NEWID(),
+            @VisitorUniqueId,
+            0,
+            @CompanyId
+        );
+
+        SET @visitorId = SCOPE_IDENTITY();
+    END;
+
+    INSERT INTO dbo.CompanyMessage (
+        Message,
         CompanyCustomerId,
         VisitorId,
         CompanyId,
-		CreatedOnUTc,
-        MessageTypeId)
-    VALUES
-         (@Message,                 -- Message - nvarchar(max)
-          @CompanyCustomerId,       -- CompanyCustomerId - int
-          @VisitorId,               -- VisitorId - int
-          @CompanyId,               -- CompanyId - int
-          GETUTCDATE(),             -- CreatedOnUTc - datetime
-          @MessageTypeId)           -- MessageTypeId - int
+        CreatedOnUTc,
+        MessageTypeId
+    ) VALUES (
+        @Message,
+        @CompanyCustomerId,
+        @visitorId,
+        @CompanyId,
+        GETUTCDATE(),
+        @MessageTypeId
+    );
 
-     SELECT SCOPE_IDENTITY();
+    SELECT SCOPE_IDENTITY();
 END;
 GO
 

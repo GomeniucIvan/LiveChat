@@ -1,7 +1,7 @@
 import React from 'react'
-import TextMessage from './TextMessage'
+import ChatTextMessage from './ChatTextMessage'
 
-const Message = (props) => {
+const ChatMessage = (props) => {
 
     let contentClassList = [
         "app-message-content",
@@ -12,10 +12,10 @@ const Message = (props) => {
         <div className="app-message">
             <div className={contentClassList.join(" ")}>
                 <div className="app-message-avatar" style={{ backgroundImage: `url(${props.message.IconUrl})` }}></div>
-                { <TextMessage {...props.message} /> }
+                {<ChatTextMessage {...props.message} /> }
             </div>
         </div>
     )
 }
 
-export default Message;
+export default ChatMessage;

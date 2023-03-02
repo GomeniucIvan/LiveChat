@@ -1,12 +1,15 @@
 import React, { useRef } from 'react'
 import SendIcon from './icons/SendIcon';
 import { useState } from 'react';
-import { postChat, postLauncher } from '../utils/HttpClient';
+import { postChat } from '../utils/HttpClient';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const UserInput = (props) => {
+const ChatUserInput = (props) => {
     const userInputRef = useRef(null);
-    const location = useLocation();
+    const visitorId = useSelector(state => state.visitor.visitorId);
+
+    console.log(visitorId);
 
     let [inputActive, setInputActive] = useState(false);
     const handleKey = async (event) => {
@@ -23,7 +26,9 @@ const UserInput = (props) => {
                 Message: text,
                 Type: 'text'
             }
-            const result = await postChat('SendMessage', model, location);
+            const result = await postChat('SendMessage',
+                /*visitorId*/ visitorId,
+                /*object*/ model);
 
             if (result.IsValid) {
                 props.onSubmit(result.Data);
@@ -56,4 +61,4 @@ const UserInput = (props) => {
     );
 }
 
-export default UserInput;
+export default ChatUserInput;

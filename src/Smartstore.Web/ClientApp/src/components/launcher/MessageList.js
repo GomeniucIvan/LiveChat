@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import Message from '../launcher/Messages/Message'
+import React from 'react';
+import ChatMessage from '../launcher/Messages/ChatMessage'
 
-const MessageList = (props) => {
+const ChatMessageList = (props) => {
     return (
         <div className="app-message-list" ref={props.msgListScrollRef}>
             {props.messages.map((message, i) => {
-                return <Message message={message} key={i} />
+                return <ChatMessage message={message} key={i} />
             })}
         </div>
     )
 }
 
-export default MessageList;
+export default ChatMessageList;

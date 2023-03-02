@@ -1,1 +1,2 @@
 export const VISITOR_TYPING = 'VISITOR_TYPING'
+export const VISITOR_ID = 'VISITOR_ID'

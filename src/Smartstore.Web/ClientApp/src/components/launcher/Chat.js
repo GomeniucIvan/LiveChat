@@ -5,7 +5,7 @@ import launcherIcon from './assets/logo-no-bg.svg';
 import launcherIconActive from './assets/close-icon.png';
 import './assets/scss/launcher.scss';
 
-const Launcher = (props) => {
+const Chat = (props) => {
     const classList = [
         'app-launcher',
         (props.isOpen ? 'opened' : ''),
@@ -41,7 +41,7 @@ const MessageCount = (props) => {
   )
 }
 
-Launcher.propTypes = {
+Chat.propTypes = {
   onMessageWasReceived: PropTypes.func,
   onGuestSendMessage: PropTypes.func,
   newMessagesCount: PropTypes.number,
@@ -50,4 +50,4 @@ Launcher.propTypes = {
   messageList: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default Launcher;
+export default Chat;
