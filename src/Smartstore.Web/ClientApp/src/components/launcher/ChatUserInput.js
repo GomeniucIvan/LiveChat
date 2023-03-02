@@ -2,18 +2,25 @@ import React, { useRef } from 'react'
 import SendIcon from './icons/SendIcon';
 import { useState } from 'react';
 import { postChat } from '../utils/HttpClient';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ChatUserInput = (props) => {
     const userInputRef = useRef(null);
     const visitorId = useSelector(state => state.visitor.visitorId);
 
+
+
     let [inputActive, setInputActive] = useState(false);
     const handleKey = async (event) => {
         if (event.keyCode === 13 && !event.shiftKey) {
             submitText(event);
         }
+
+        visitorTyping();
+    }
+
+    const visitorTyping = async () => {
+        const result = await postChat('Typing', /*visitorId*/ visitorId);
     }
 
     const submitText = async (event) => {

@@ -8,7 +8,9 @@ import { Storage } from "../../utils/StorageHelper";
 const DetailsBody = (props) => {
     let [messageList, setMessageList] = useState([]);
     let [loading, setLoading] = useState(true);
+    let [visitorTyping, setVisitorTyping] = useState(false);
     const scrollRef = useRef(null);
+    let typingTimer;
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -26,6 +28,12 @@ const DetailsBody = (props) => {
             scrollMessageList();
         });
 
+        connection.on(`visitor_${Storage.CompanyId}_${props.visitorId}_typing`, function (message) {
+            clearTimeout(typingTimer);
+            setVisitorTyping(true);
+            typingTimer = setTimeout(setVisitorTypingToFalse, 1000);
+        });
+
         const PopulateComponent = async () => {
             let response = await postLauncher('VisitorMessages', /*visitorId*/ props.visitorId, /*model*/ null);
 
@@ -38,6 +46,10 @@ const DetailsBody = (props) => {
         setLoading(false);
         PopulateComponent();
     }, []);
+
+    function setVisitorTypingToFalse() {
+        setVisitorTyping(false)
+    }
 
     const scrollMessageList = async () => {
         setTimeout(() => {
@@ -83,6 +95,10 @@ const DetailsBody = (props) => {
                         </div>
                     )
                 })}
+
+                {visitorTyping &&
+                    <span>typing</span>
+                }
             </div>
         </>
     )

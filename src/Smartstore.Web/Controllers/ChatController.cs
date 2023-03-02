@@ -91,6 +91,13 @@ namespace Smartstore.Web.Controllers
             return ApiJson(resultModel.Error(), HttpContext);
         } 
 
+        [HttpPost("Typing")]
+        public async Task<IActionResult> Typing()
+        {
+            await _hubContext.Clients.All.SendAsync($"visitor_{CompanyId}_{VisitorId}_typing");
+            return ApiJson(null, HttpContext);
+        }
+
         #endregion
     }
 }

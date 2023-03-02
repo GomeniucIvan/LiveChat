@@ -20,7 +20,6 @@ const Widget = (props) => {
     const location = useLocation();
     const dispatch = useDispatch();
     let visitorId = null;
-    let connection = null;
     let typingTimer;
 
     //todo
@@ -60,7 +59,7 @@ const Widget = (props) => {
         }
         PopulateComponent();
 
-        connection = new HubConnectionBuilder()
+        const connection = new HubConnectionBuilder()
             .withUrl("/chatHub")
             .withAutomaticReconnect()
             .configureLogging(LogLevel.None)
