@@ -80,9 +80,9 @@ namespace Smartstore.Web.Controllers
         }
 
         [HttpPost("Typing")]
-        public async Task<IActionResult> Typing([FromBody] TypingModel model)
+        public async Task<IActionResult> Typing()
         {
-            await _hubContext.Clients.All.SendAsync($"company_{CompanyId}_{model.VisitorId}_typing");
+            await _hubContext.Clients.All.SendAsync($"company_{CompanyId}_{VisitorId}_typing");
             return ApiJson(null, HttpContext);
         }
 

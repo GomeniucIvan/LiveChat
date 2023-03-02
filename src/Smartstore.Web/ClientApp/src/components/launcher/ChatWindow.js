@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ChatMessageList from './MessageList'
 import ChatUserInput from './ChatUserInput'
 import ChatHeader from './ChatHeader'
 import { Loading } from './../utils/Loading'
 
 const ChatWindow = (props) => {
+
     const onGuestSendMessage = async (message) => {
         props.onGuestSendMessage(message);
     }
@@ -28,6 +29,9 @@ const ChatWindow = (props) => {
                     messages={messageList}
                     imageUrl={props.agentProfile.imageUrl}
                 />
+            }
+            {props.companyTyping &&
+                <span>Typing</span>
             }
             {!props.isOpen &&
                 <Loading />

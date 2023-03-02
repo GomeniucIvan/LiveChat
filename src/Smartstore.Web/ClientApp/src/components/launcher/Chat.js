@@ -26,6 +26,7 @@ const Chat = (props) => {
                 onGuestSendMessage={props.onGuestSendMessage}
                 agentProfile={props.agentProfile}
                 isOpen={props.isOpen}
+                companyTyping={props.companyTyping}
                 onClose={props.handleClick.bind(this)}
             />
         </div>

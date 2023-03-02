@@ -4,9 +4,4 @@
     {
         public string Message { get; set; }
     }
-
-    public class TypingModel
-    {
-        public int VisitorId { get; set; }
-    }
 }

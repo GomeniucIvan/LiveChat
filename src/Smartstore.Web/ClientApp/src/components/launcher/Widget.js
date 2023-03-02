@@ -15,10 +15,16 @@ const Widget = (props) => {
     let [newMessagesCount, setNewMessagesCount] = useState(0);
     let [isOpen, setIsOpen] = useState(false);
     let [loading, setLoading] = useState(true);
+    let [companyTyping, setCompanyTyping] = useState(false);
     const msgListScrollRef = useRef(null);
     const location = useLocation();
     const dispatch = useDispatch();
     let visitorId = null;
+    let connection = null;
+    let typingTimer;
+
+    //todo
+    //read typing indicator to setting
 
     useEffect(() => {
         const PopulateComponent = async () => {
@@ -54,7 +60,7 @@ const Widget = (props) => {
         }
         PopulateComponent();
 
-        const connection = new HubConnectionBuilder()
+        connection = new HubConnectionBuilder()
             .withUrl("/chatHub")
             .withAutomaticReconnect()
             .configureLogging(LogLevel.None)
@@ -69,9 +75,16 @@ const Widget = (props) => {
         });
 
         connection.on(`company_${Storage.CompanyId}_${visitorId}_typing`, function (message) {
-            
+            clearTimeout(typingTimer);
+            setCompanyTyping(true);
+            typingTimer = setTimeout(setCompanyTypingToFalse, 1000);
         });
+
     }, []);
+
+    function setCompanyTypingToFalse() {
+        setCompanyTyping(false)
+    }
 
     const onGuestSendMessage = async (message) => {
         setMessageList([...messageList, message]);
@@ -108,6 +121,7 @@ const Widget = (props) => {
                 newMessagesCount={newMessagesCount}
                 handleClick={handleIconClick.bind(this)}
                 isOpen={isOpen}
+                companyTyping={companyTyping}
             />
         </div>
     )
