@@ -127,29 +127,43 @@ CREATE PROCEDURE [dbo].[CompanyMessage_GetList]
      @PageSize INT)
 AS
 BEGIN
-    SELECT TOP (@PageSize) 
+	CREATE TABLE #TempVisitorIds (
+        VisitorId INT,
+		CompanyMessageId INT
+    )
+
+    INSERT INTO #TempVisitorIds (VisitorId, CompanyMessageId)
+    SELECT DISTINCT TOP (@PageSize)
+	cm.VisitorId,
+	MAX(cm.Id)
+    FROM dbo.CompanyMessage cm WITH (NOLOCK)         
+    WHERE cm.CompanyId = @CompanyId
+	GROUP BY cm.VisitorId;
+
+    SELECT 
         cm.Id,
         cm.Message,
         cm.CompanyCustomerId,
-        cm.VisitorId,
-        cm.CompanyId,
-        cm.CreatedOnUtc,
-        cm.MessageTypeId as MessageType,
-        c.FirstName + ' ' + c.LastName AS CustomerFullName,
-        ga.Value AS VisitorFullName,
+		cm.VisitorId,
+		cm.CompanyId,
+		cm.CreatedOnUtc,
+		cm.MessageTypeId as MessageType,
+		c.FirstName + ' ' + c.LastName AS CustomerFullName,
+		ga.Value AS VisitorFullName,
 		v.UniqueId as VisitorUniqueId
 
-    FROM dbo.CompanyMessage cm WITH (NOLOCK)        
-    LEFT JOIN dbo.Visitor v WITH (NOLOCK) ON v.Id = cm.VisitorId
+
+    FROM #TempVisitorIds t
+	JOIN dbo.CompanyMessage cm WITH(NOLOCK) ON cm.Id = t.CompanyMessageId
+    JOIN dbo.Visitor v WITH (NOLOCK) ON v.Id = cm.VisitorId
     LEFT JOIN dbo.GenericAttribute ga WITH (NOLOCK) ON ga.EntityId = v.Id
                                                    AND ga.KeyGroup = 'Visitor'
                                                    AND ga.[Key] = 'FullName'
     LEFT JOIN dbo.CompanyCustomer cc WITH (NOLOCK) ON cc.Id = cm.CompanyCustomerId AND cc.Deleted = 0 AND  cc.CompanyId = @CompanyId
-    LEFT JOIN dbo.Customer c WITH (NOLOCK) ON c.Id = cc.CustomerId AND c.Active = 1 
-    WHERE cm.CompanyId = @CompanyId	
-        
-    GROUP BY cm.VisitorId, cm.Id, cm.Message, cm.CompanyCustomerId, cm.VisitorId, cm.CompanyId, cm.CreatedOnUtc, cm.MessageTypeId, c.FirstName, c.LastName, ga.Value, v.UniqueId
-    ORDER BY cm.CreatedOnUtc DESC;
+    LEFT JOIN dbo.Customer c WITH (NOLOCK) ON c.Id = cc.CustomerId AND c.Active = 1
+	WHERE cm.VisitorId = cm.VisitorId
+
+    DROP TABLE IF EXISTS #TempVisitorIds;
 END;
 GO
 
