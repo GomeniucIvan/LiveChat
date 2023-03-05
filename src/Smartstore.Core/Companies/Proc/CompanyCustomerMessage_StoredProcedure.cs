@@ -24,18 +24,25 @@ namespace Smartstore.Core.Companies.Proc
             int companyId,
             int? visitorId,
             int? companyCustomerId,
-            bool visitorCall = false)
+            bool visitorCall,
+            out int newMessagesCount)
         {
             var pCompanyIdDbParameter = db.DataProvider.CreateIntParameter("CompanyId", companyId);
             var pVisitorIdDbParameter = db.DataProvider.CreateIntParameter("VisitorId", visitorId);
             var pCompanyCustomerIdDbParameter = db.DataProvider.CreateIntParameter("CompanyCustomerId", companyCustomerId);
             var pVisitorCallDbParameter = db.DataProvider.CreateBooleanParameter("VisitorCall", visitorCall);
+            var pNewMessagesCountDbParameter = db.DataProvider.CreateIntOutParameter("NewMessagesCount");
 
-            return db.ExecStoreProcedure<CompanyMessageDto>($"{nameof(CompanyMessage)}_GetVisitorList",
+            var messagesList = db.ExecStoreProcedure<CompanyMessageDto>($"{nameof(CompanyMessage)}_GetVisitorList",
                 pCompanyIdDbParameter,
                 pVisitorIdDbParameter,
                 pCompanyCustomerIdDbParameter,
-                pVisitorCallDbParameter).ToList();
+                pVisitorCallDbParameter,
+                pNewMessagesCountDbParameter).ToList();
+
+            newMessagesCount = ((int) pNewMessagesCountDbParameter.Value);
+
+            return messagesList;
         }
 
         public static int? CompanyMessage_Insert(this SmartDbContext db,

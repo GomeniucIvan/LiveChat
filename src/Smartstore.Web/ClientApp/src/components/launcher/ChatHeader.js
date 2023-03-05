@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import closeIcon from './assets/close-icon.png';
 
 
-class ChatHeader extends Component {
-
-  render() {
+const ChatHeader = (props) => {
     return (
-      <div className="app-header">
-        <img className="app-header-image" src={this.props.imageUrl} alt="" />
-        <div className="app-header-member"> {this.props.teamName} </div>
-        <div className="app-header-close-btn" onClick={this.props.onClose}>
-          <img src={closeIcon} alt="" />
+        <div className="app-header">
+            <img className="app-header-image" src={props.imageUrl} alt="" />
+            <div className="app-header-member"> {props.teamName} </div>
+            <div className="app-header-close-btn" onClick={props.onClose}>
+                <img src={closeIcon} alt="" />
+            </div>
         </div>
-      </div>
     );
-  }
 }
 
 export default ChatHeader;

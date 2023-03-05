@@ -68,6 +68,8 @@ namespace Smartstore.Core.Companies.Domain
 
         public DateTime CreatedOnUtc { get; set; }
 
+        public DateTime? ReadOnUtc { get; set; }
+
         /// <summary>
         /// Gets or sets the message type identifier.
         /// </summary>

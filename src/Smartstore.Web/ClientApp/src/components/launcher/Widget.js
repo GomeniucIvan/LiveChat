@@ -16,9 +16,12 @@ const Widget = (props) => {
     let [isOpen, setIsOpen] = useState(false);
     let [loading, setLoading] = useState(true);
     let [companyTyping, setCompanyTyping] = useState(false);
+    let [company, setCompany] = useState(null);
+
     const msgListScrollRef = useRef(null);
     const location = useLocation();
     const dispatch = useDispatch();
+
     let visitorId = null;
     let typingTimer;
 
@@ -47,10 +50,11 @@ const Widget = (props) => {
                 }
             }
 
-            let response = await postChat(`Messages`,
-                /*visitorId*/ visitorId);
+            let response = await postChat(`Messages`, /*visitorId*/ visitorId);
+
             if (response && response.IsValid) {
-                setMessageList(response.Data);
+                setMessageList(response.Data.Messages);
+                setNewMessagesCount(response.Data.NewMessagesCount);
                 messageArrayList = response.Data;
 
                 await scrollMessageList();
@@ -78,7 +82,6 @@ const Widget = (props) => {
             setCompanyTyping(true);
             typingTimer = setTimeout(setCompanyTypingToFalse, 1000);
         });
-
     }, []);
 
     function setCompanyTypingToFalse() {

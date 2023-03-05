@@ -5,7 +5,6 @@ import ChatHeader from './ChatHeader'
 import { Loading } from './../utils/Loading'
 
 const ChatWindow = (props) => {
-
     const onGuestSendMessage = async (message) => {
         props.onGuestSendMessage(message);
     }

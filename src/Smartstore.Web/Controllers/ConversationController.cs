@@ -44,7 +44,9 @@ namespace Smartstore.Web.Controllers
         {
             IList<CompanyMessageDto> messages = _db.CompanyMessage_GetVisitorList(companyId: CompanyId,
                 visitorId: VisitorId,
-                companyCustomerId: CustomerId).ToList();
+                companyCustomerId: CustomerId,
+                visitorCall: false,
+                out int newMessagesCount).ToList();
 
             return ApiJson(new GenericApiModel<IList<CompanyMessageDto>>().Success(messages.ToArray()), HttpContext);
         }

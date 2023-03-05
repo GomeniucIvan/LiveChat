@@ -172,24 +172,49 @@ CREATE PROCEDURE [dbo].[CompanyMessage_GetVisitorList]
     @CompanyId INT,
 	@VisitorId INT,
 	@CompanyCustomerId INT,
-	@VisitorCall BIT)
+	@VisitorCall BIT,
+    @NewMessagesCount INT = NULL OUT)
 AS
 BEGIN
+    CREATE TABLE #messages (
+        Id INT,
+        Message VARCHAR(MAX),
+        CompanyCustomerId INT,
+        VisitorId INT,
+        CompanyId INT,
+        CreatedOnUtc DATETIME,
+        MessageType INT,
+	    ReadOnUtc DATETIME
+    );
+
+    INSERT INTO #messages (Id, Message, CompanyCustomerId, VisitorId, CompanyId, CreatedOnUtc, MessageType, ReadOnUtc)
     SELECT cm.Id,
            cm.Message,
            cm.CompanyCustomerId,
            cm.VisitorId,
            cm.CompanyId,
            cm.CreatedOnUtc,
-           cm.MessageType,
-           CASE WHEN ISNULL(cm.CompanyCustomerId, '') = '' AND @VisitorCall = 1 THEN
-                    CAST(1 AS BIT)
-           ELSE CAST(0 AS BIT)END AS Sent
-
+           cm.MessageTypeId as MessageType,
+	       cm.ReadOnUtc
     FROM   dbo.CompanyMessage cm WITH(NOLOCK)
     WHERE  (ISNULL(cm.VisitorId, 0) = 0 OR cm.VisitorId = @VisitorId)
            --AND (ISNULL(cm.CompanyCustomerId, 0) = 0 OR cm.CompanyCustomerId = @CompanyCustomerId)
            AND cm.CompanyId = @CompanyId;
+
+
+    IF ISNULL(@VisitorCall,0) = 1
+    BEGIN
+        SET @NewMessagesCount = (SELECT COUNT(m.Id) FROM #messages m WHERE m.ReadOnUtc IS NULL AND m.MessageType != 0);
+    END
+
+    IF ISNULL(@VisitorCall,0) = 0
+    BEGIN
+        SET @NewMessagesCount = (SELECT COUNT(m.Id) FROM #messages m WHERE m.ReadOnUtc IS NULL AND m.MessageType = 0);
+    END
+
+    SELECT * FROM #messages;
+
+    DROP TABLE IF EXISTS #messages;
 END;
 GO
 

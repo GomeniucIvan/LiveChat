@@ -509,6 +509,19 @@ namespace Smartstore.Data.Providers
             return p;
         }
 
+        public DbParameter CreateIntOutParameter(string name)
+        {
+            Guard.NotEmpty(name, nameof(name));
+
+            var p = CreateParameter();
+            p.ParameterName = name;
+            p.Value = DBNull.Value;
+            p.Direction = ParameterDirection.Output;
+            p.DbType = DbType.Int32;
+
+            return p;
+        }
+
         public DbParameter CreateBooleanParameter(string name, object value)
         {
             Guard.NotEmpty(name, nameof(name));

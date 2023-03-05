@@ -2,6 +2,11 @@
 
 namespace Smartstore.Core.Companies.Dtos
 {
+    public class VisitorResponseDto
+    {
+        public int NewMessagesCount { get; set; }
+        public IList<CompanyMessageDto> Messages { get; set; } = new List<CompanyMessageDto>();
+    }
     public class CompanyMessageDto
     {
         public int Id { get; set; }
@@ -19,6 +24,7 @@ namespace Smartstore.Core.Companies.Dtos
         public string CustomerFullName { get; set; }
         public MessageTypeEnum MessageType { get; set; }
         public string VisitorUniqueId { get; set; }
+        public DateTime? ReadOnUtc { get; set; }
 
         public string FullName
         {
