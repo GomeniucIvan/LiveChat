@@ -42,7 +42,13 @@ namespace Smartstore.Core.Companies.Dtos
                 }
                 else
                 {
-                    return CustomerFullName;
+                    var fullName = CustomerFullName;
+                    if (fullName.IsEmpty())
+                    {
+                        fullName = $"Customer {CompanyCustomerId}";
+                    }
+
+                    return fullName;
                 }
             }
         }

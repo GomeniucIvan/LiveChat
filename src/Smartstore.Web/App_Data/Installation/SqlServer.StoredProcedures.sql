@@ -218,6 +218,26 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE [dbo].[CompanyMessage_MarkRead]
+      (@CompanyId INT,
+		@VisitorId INT,
+		@CompanyCustomerId INT,
+		@VisitorCall BIT)
+AS
+BEGIN
+	Update cm
+	SET    cm.ReadOnUtc = GETUTCDATE()
+	FROM   dbo.CompanyMessage cm WITH(NOLOCK)
+	WHERE  cm.ReadOnUtc IS NULL
+	       AND (ISNULL(@VisitorCall,0) = 0 OR cm.MessageTypeId != 0)
+	       AND (ISNULL(@VisitorCall,0) = 1 OR cm.MessageTypeId = 0)
+	       AND cm.VisitorId = @VisitorId
+	       AND cm.CompanyId = @CompanyId
+
+	SELECT @@ROWCOUNT
+END;
+GO
+
 CREATE PROCEDURE [dbo].[Customer_ApiDetails]
      (@Email NVARCHAR(500),
 	  @UpdateLastLoginDate BIT = NULL)

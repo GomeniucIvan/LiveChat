@@ -70,6 +70,17 @@ namespace Smartstore.Web.Controllers
             return ApiJson(new GenericApiModel<VisitorResponseDto>().Success(response), HttpContext);
         }
 
+        [HttpPost("MarkReadMessages")]
+        public async Task<IActionResult> MarkReadMessages()
+        {
+            int messagesCount = _db.CompanyMessage_MarkRead(companyId: CompanyId,
+                visitorId: VisitorId.GetValueOrDefault(),
+                companyCustomerId: null,
+                visitorCall: true);
+
+            return ApiJson(new GenericApiModel<bool>().Success(true), HttpContext);
+        }
+
         [HttpPost("SendMessage")]
         public async Task<IActionResult> SendMessage([FromBody]LauncherMessageModel model)
         {

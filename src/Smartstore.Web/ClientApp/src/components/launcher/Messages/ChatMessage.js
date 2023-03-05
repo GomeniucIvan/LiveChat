@@ -1,11 +1,13 @@
 import React from 'react'
+import { isNullOrEmpty } from '../../utils/Utils';
 import ChatTextMessage from './ChatTextMessage'
 
 const ChatMessage = (props) => {
 
     let contentClassList = [
         "app-message-content",
-        (props.message.IsVisitorMessage ? "sent" : "received")
+        (props.message.IsVisitorMessage ? "sent" : "received"),
+        (!props.message.IsVisitorMessage && isNullOrEmpty(props.message.ReadOnUtc) ? "new" : "")
     ];
 
     return (

@@ -7,8 +7,7 @@ import { Storage } from '../utils/StorageHelper';
 import { useDispatch } from 'react-redux';
 
 let isInitCall = true;
-
-let messageArrayList = []; //todo ?! setMessageList reload component!!
+let visitorId = null;
 
 const Widget = (props) => {
     let [messageList, setMessageList] = useState([]);
@@ -22,7 +21,6 @@ const Widget = (props) => {
     const location = useLocation();
     const dispatch = useDispatch();
 
-    let visitorId = null;
     let typingTimer;
 
     //todo
@@ -50,16 +48,7 @@ const Widget = (props) => {
                 }
             }
 
-            let response = await postChat(`Messages`, /*visitorId*/ visitorId);
-
-            if (response && response.IsValid) {
-                setMessageList(response.Data.Messages);
-                setNewMessagesCount(response.Data.NewMessagesCount);
-                messageArrayList = response.Data;
-
-                await scrollMessageList();
-            }
-            setLoading(false);
+            loadMessages();
         }
         PopulateComponent();
 
@@ -74,7 +63,7 @@ const Widget = (props) => {
         });
 
         connection.on(`visitor_${Storage.CompanyId}_${visitorId}_new_message`, function (message) {
-            PopulateComponent();
+            loadMessages();
         });
 
         connection.on(`company_${Storage.CompanyId}_${visitorId}_typing`, function (message) {
@@ -83,6 +72,19 @@ const Widget = (props) => {
             typingTimer = setTimeout(setCompanyTypingToFalse, 1000);
         });
     }, []);
+
+    const loadMessages = async () => {
+        let response = await postChat(`Messages`, /*visitorId*/ visitorId);
+
+        if (response && response.IsValid) {
+            setMessageList(response.Data.Messages);
+            setNewMessagesCount(response.Data.NewMessagesCount);
+
+            await scrollMessageList();
+        }
+
+        setLoading(false);
+    }
 
     function setCompanyTypingToFalse() {
         setCompanyTyping(false)
@@ -95,10 +97,12 @@ const Widget = (props) => {
     }
 
     const handleIconClick = async () => {
-        setIsOpen(!isOpen);
-        if (isOpen) {
+        if (!isOpen) {
             setNewMessagesCount(0);
+            let response = await postChat(`MarkReadMessages`, /*visitorId*/ visitorId);
         }
+
+        setIsOpen(!isOpen);
         await scrollMessageList();
     }
 

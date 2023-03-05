@@ -8,8 +8,6 @@ const ChatUserInput = (props) => {
     const userInputRef = useRef(null);
     const visitorId = useSelector(state => state.visitor.visitorId);
 
-
-
     let [inputActive, setInputActive] = useState(false);
     const handleKey = async (event) => {
         if (event.keyCode === 13 && !event.shiftKey) {
