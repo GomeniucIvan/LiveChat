@@ -71,16 +71,16 @@ namespace Smartstore.Core.Companies.Domain
         /// <summary>
         /// Gets or sets the message type identifier.
         /// </summary>
-        public int SubmitTypeId { get; set; }
+        public int MessageTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the submit type.
         /// </summary>
         [NotMapped]
-        public MessageTypeEnum SubmitType
+        public MessageTypeEnum MessageType
         {
-            get => (MessageTypeEnum)SubmitTypeId;
-            set => SubmitTypeId = (int)value;
+            get => (MessageTypeEnum)MessageTypeId;
+            set => MessageTypeId = (int)value;
         }
     }
 }

@@ -1,0 +1,27 @@
+@mixin scrollBar {
+    &::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    &::-webkit-scrollbar {
+        width: 12px;
+        height: 10px;
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #c9c8c8;
+        cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #b3b2b2;
+    }
+
+    scrollbar-width: thin;
+}

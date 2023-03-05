@@ -28,6 +28,8 @@
     background-color: white;
     background-size: 100%;
     padding: 40px 0px;
+
+    @include scrollBar;
 }
 
 .app-message-me {

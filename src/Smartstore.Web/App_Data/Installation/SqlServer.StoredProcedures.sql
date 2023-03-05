@@ -181,6 +181,7 @@ BEGIN
            cm.VisitorId,
            cm.CompanyId,
            cm.CreatedOnUtc,
+           cm.MessageType,
            CASE WHEN ISNULL(cm.CompanyCustomerId, '') = '' AND @VisitorCall = 1 THEN
                     CAST(1 AS BIT)
            ELSE CAST(0 AS BIT)END AS Sent

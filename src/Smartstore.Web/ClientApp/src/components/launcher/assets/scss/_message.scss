@@ -31,13 +31,18 @@
 }
 
 .app-message-text {
-    padding: 17px 20px;
+    padding: 10px 16px;
     border-radius: 6px;
     font-weight: 300;
     font-size: 14px;
     line-height: 1.4;
     white-space: pre-wrap;
-    -webkit-font-smoothing: subpixel-antialiased
+    -webkit-font-smoothing: subpixel-antialiased;
+
+    p {
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+    }
 }
 
 .app-message-content.sent .app-message-text {

@@ -5,7 +5,7 @@ const ChatMessage = (props) => {
 
     let contentClassList = [
         "app-message-content",
-        (props.message.Sent ? "sent" : "received")
+        (props.message.IsVisitorMessage ? "sent" : "received")
     ];
 
     return (
