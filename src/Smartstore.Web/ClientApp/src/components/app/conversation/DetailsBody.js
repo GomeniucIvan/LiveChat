@@ -97,7 +97,13 @@ const DetailsBody = (props) => {
                 })}
 
                 {visitorTyping &&
-                    <span>typing</span>
+                    <div className="type-container">
+                        <div className="type-block">
+                            <div className="type-dot"></div>
+                            <div className="type-dot"></div>
+                            <div className="type-dot"></div>
+                        </div>
+                    </div>
                 }
             </div>
         </>

@@ -1,0 +1,61 @@
+.type-container {
+    margin-left: auto;
+    margin-right: 50px;
+
+    .type-block {
+        align-items: center;
+        display: flex;
+        height: 17px;
+    }
+
+    .type-dot {
+        background-color: #90949c;
+        animation-name: bounce;
+        animation-duration: 1.3s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        border-radius: 2px;
+        display: inline-block;
+        height: 5px;
+        margin-right: 4px;
+        width: 5px;
+
+        &:nth-child(1) {
+            margin: 0px 4px;
+        }
+
+        &:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+    }
+}
+
+.conv-body {
+    .type-container {
+        margin: auto;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(0px, -50%);
+        box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);
+        -webkit-box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);
+        -moz-box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);
+        background: white;
+        border-radius: 8px;
+        padding: 8px 10px;
+    }
+}
+
+@keyframes bounce {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-4px);
+    }
+}

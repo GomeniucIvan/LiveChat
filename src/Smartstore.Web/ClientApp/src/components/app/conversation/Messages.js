@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { KTSVG } from '../../utils/Utils'
+import { isNullOrEmpty, KTSVG, T } from '../../utils/Utils'
 import Translate from '../../utils/Translate'
 import Details from "./Details";
 import { post } from "../../utils/HttpClient";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { ReactComponent as NoSelectedVisitorSvf } from '../assets/svgs/no-selected-visitor.svg';
+import { useLocation } from "react-router-dom";
 
 const Index = (props) => {
     const [loading, setLoading] = useState(false);
     let [messageList, setMessageList] = useState([]);
     let [visitorId, setVisitorId] = useState(null);
+    const location = useLocation();
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -37,6 +40,7 @@ const Index = (props) => {
     }, [])
 
     function selectVisitor(visitorId) {
+        window.history.pushState({}, "", `/message/${visitorId}`);
         setVisitorId(visitorId);
     };
 
@@ -56,12 +60,14 @@ const Index = (props) => {
 
                         {messageList.map(message => {
                             return (
-                                <div onClick={() => selectVisitor(message.VisitorId)} className='conversation-item' key={message.Id}>
+                                <div onClick={() => selectVisitor(message.VisitorId)}
+                                    className={`conversation-item ${message.VisitorId === visitorId ? 'selected' : ''}` }
+                                    key={message.Id}>
                                     <div className='d-flex w-100'>
                                         <span className="current-user">
                                             <div className="user-thumbnail-box">
                                                 <div className="avatar-container user-thumbnail thumbnail-rounded">
-                                                    <span>IG</span>
+                                                    <span>{message.CustomerInitials}</span>
                                                 </div>
                                                 <div className="source-badge user-online-status"></div>
                                             </div>
@@ -71,8 +77,11 @@ const Index = (props) => {
                                                 <div className='current-user-initials'>
                                                     {message.FullName}
                                                 </div>
-                                                <div className='current-user-description'>
-                                                    {message.Description}
+                                                <div className='current-user-message'>
+                                                    {!message.IsVisitorMessage &&
+                                                        <KTSVG icon='arrow-reply-outline' />
+                                                    }
+                                                    {message.MessageShort}
                                                 </div>
                                             </span>
                                             <span>
@@ -80,24 +89,31 @@ const Index = (props) => {
                                             </span>
                                         </span>
                                     </div>
-
-                                    <div className='reply-text'>
-
-                                    </div>
-                                    <div className='sent-text'>
-                                        {message.LastMessage}
-                                    </div>
                                 </div>
                             )
                         })}
                     </div>
                 </div>
 
-                {<Details visitorId={visitorId} />}
+                {isNullOrEmpty(visitorId) &&
+                    <div className='conversation-empty-visitor'>
+                        <NoSelectedVisitorSvf />
+                        <div>
+                            <Translate text="App.Conversation.SelectMessage" />
+                        </div>
+                    </div>
+                }
 
-                <div className='conversation-details-summary'>
+                {!isNullOrEmpty(visitorId) &&
+                    <>
+                        {<Details visitorId={visitorId} />}
 
-                </div>
+                        <div className='conversation-details-summary'>
+
+                        </div>
+                    </>
+                }
+
             </section>
         </>
     )

@@ -23,11 +23,13 @@
         position: relative;
 
         .user-thumbnail {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             line-height: 33px;
-            font-size: 12px;
+            font-size: 16px;
+            display: flex;
+            font-weight: 500;
             background-color: rgb(194, 225, 255);
             color: rgb(25, 118, 204);
             display: flex;
@@ -35,10 +37,10 @@
         }
 
         .source-badge {
-            width: 8px;
-            height: 8px;
+            width: 11px;
+            height: 11px;
             position: absolute;
-            right: 0;
+            right: -2px;
             border-radius: 10px;
             top: 22px;
 
@@ -80,22 +82,31 @@
             flex: 1 1;
 
             .conversation-item {
-                background-color: #e9eeef;
-                padding: 10px 10px 10px 14px;
+                padding: 16px 14px 16px 16px;
                 border-bottom: 1px solid var(--border-color);
                 cursor: pointer;
                 width: 100%;
                 position: relative;
 
-                &:before {
-                    background-color: #1f93ff;
-                    width: 2px;
-                    content: ' ';
-                    position: absolute;
-                    left: 0;
-                    height: 100px;
-                    top: 0;
+                &:hover {
+                    background-color: #fafafa;
                 }
+
+                &.selected {
+                    background-color: #e9eeef;
+
+                    &:before {
+                        background-color: #1f93ff;
+                        width: 2px;
+                        content: ' ';
+                        position: absolute;
+                        left: 0;
+                        height: 100%;
+                        top: 0;
+                    }
+                }
+
+
 
                 .current-user {
                     padding-top: 0px;
@@ -116,9 +127,13 @@
                         font-size: 14px;
                     }
 
-                    .current-user-description {
+                    .current-user-message {
                         font-weight: 600;
-                        font-size: 12px;
+                        font-size: 14px;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        opacity: 0.8;
                     }
                 }
 
@@ -137,6 +152,20 @@
             margin: 0;
             height: 100%;
             min-height: 0;
+        }
+    }
+
+    .conversation-empty-visitor {
+        display: flex;
+        width: 100%;
+        border-left: 1px solid #f1f5f8;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+
+        svg {
+            max-width: 100px;
         }
     }
 

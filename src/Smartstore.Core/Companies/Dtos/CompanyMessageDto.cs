@@ -11,6 +11,7 @@ namespace Smartstore.Core.Companies.Dtos
     {
         public int Id { get; set; }
         public string Message { get; set; }
+        public string MessageShort => Message.TruncateHtml(maxLength: 45);
         public string Data => Message;
         public int? VisitorId { get; set; }
         public int? CompanyCustomerId { get; set; }
@@ -26,30 +27,31 @@ namespace Smartstore.Core.Companies.Dtos
         public string VisitorUniqueId { get; set; }
         public DateTime? ReadOnUtc { get; set; }
 
+
+        public string CustomerInitials
+        {
+            get
+            {
+                var array = FullName.Split(' ');
+                if (array.Length >= 2 && !array[0].IsEmpty() && !array[1].IsEmpty())
+                {
+                    return $"{array[0].Substring(0,1)}{array[1].Substring(0,1)}";
+                }
+
+                return $"{array[0].Substring(0,1)}";
+            }
+        }
         public string FullName
         {
             get
             {
-                if (MessageType == MessageTypeEnum.Visitor)
+                var fullName = VisitorFullName;
+                if (fullName.IsEmpty())
                 {
-                    var fullName = VisitorFullName;
-                    if (fullName.IsEmpty())
-                    {
-                        fullName = $"Visitor {VisitorUniqueId}";
-                    }
-
-                    return fullName;
+                    fullName = $"Visitor {VisitorUniqueId}";
                 }
-                else
-                {
-                    var fullName = CustomerFullName;
-                    if (fullName.IsEmpty())
-                    {
-                        fullName = $"Customer {CompanyCustomerId}";
-                    }
 
-                    return fullName;
-                }
+                return fullName;
             }
         }
 

@@ -143,23 +143,6 @@ namespace Smartstore
             return null;
         }
 
-        [DebuggerStepThrough]
-        public static Version ToVersion(this string value, Version defaultVersion = null)
-        {
-            return ToVersion(value.AsSpan(), defaultVersion);
-        }
-
-        [DebuggerStepThrough]
-        public static Version ToVersion(this ReadOnlySpan<char> value, Version defaultVersion = null)
-        {
-            if (Version.TryParse(value, out var version))
-            {
-                return version;
-            }
-            
-            return defaultVersion ?? new Version("1.0");
-        }
-
         /// <summary>
         /// Encodes all the characters in the specified string into a sequence of bytes.
         /// </summary>
@@ -280,6 +263,21 @@ namespace Smartstore
         public static int[] ToIntArray(this string value)
         {
             return value.Convert<int[]>() ?? Array.Empty<int>();
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string TruncateHtml(this string html, int maxLength)
+        {
+            string text = Regex.Replace(html, "<.*?>", " ");
+            text = Regex.Replace(text, @"\s+", " ").Trim();
+
+            if (text.Length > maxLength)
+            {
+                text = text.Substring(0, maxLength) + "...";
+            }
+
+            return text;
         }
     }
 }

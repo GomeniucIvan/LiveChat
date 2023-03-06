@@ -30,7 +30,15 @@ const ChatWindow = (props) => {
                 />
             }
             {props.companyTyping &&
-                <span>Typing</span>
+                <>
+                    <div className="type-container">
+                        <div className="type-block">
+                            <div className="type-dot"></div>
+                            <div className="type-dot"></div>
+                            <div className="type-dot"></div>
+                        </div>
+                    </div>
+                </>
             }
             {!props.isOpen &&
                 <Loading />
