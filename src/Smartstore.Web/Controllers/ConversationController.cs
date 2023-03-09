@@ -9,6 +9,7 @@ using Smartstore.Web.Models.System;
 
 namespace Smartstore.Web.Controllers
 {
+    //todo rename
     public class ConversationController : WebApiController
     {
         #region Fields
@@ -30,6 +31,21 @@ namespace Smartstore.Web.Controllers
         #endregion
 
         #region Methods
+
+        [HttpPost("MessageDetails")]
+        public async Task<IActionResult> MessageDetails(int visitorId)
+        {
+            IList<CompanyMessageDto> messages = _db.CompanyMessage_GetList(companyId: CompanyId,
+                pageSize: 1,
+                visitorId: visitorId).ToList();
+
+            if (messages.Count != 1)
+            {
+                return ApiJson(new GenericApiModel<CompanyMessageDto>().Error(T("App.Conversation.MessageNotFound")), HttpContext);              
+            }
+
+            return ApiJson(new GenericApiModel<CompanyMessageDto>().Success(messages.FirstOrDefault()), HttpContext);
+        }
 
         [HttpPost("Messages")]
         public async Task<IActionResult> Messages()

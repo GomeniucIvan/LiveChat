@@ -30,7 +30,7 @@ export function AsideMenuMain() {
                 menuIcon='svg'
             />
             <AsideMenuItem
-                to='/settings'
+                to='/settings/general'
                 icon='settings-outline'
                 title={T('App.Navigation.Settings')}
                 menuIcon='svg'

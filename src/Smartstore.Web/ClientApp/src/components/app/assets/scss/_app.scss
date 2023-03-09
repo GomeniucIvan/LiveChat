@@ -56,6 +56,37 @@
     width: 100%;
     height: 100%;
 
+    .conversation-details-summary-wrapper {
+        position: relative;
+
+        .conversation-details-summary-expander {
+            position: absolute;
+            top: 30%;
+            left: -25px;
+            background-color: white;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            cursor: pointer;
+
+            svg {
+                width: 26px;
+                height: 30px;
+                opacity: 0.8;
+            }
+
+            &:hover {
+                right: 4px !important;
+/*                box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);
+                -webkit-box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);
+                -moz-box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 4%);*/
+
+                svg {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
     .conversations-list-wrap,
     .conversation-details-summary {
         display: flex;
@@ -252,7 +283,16 @@
     }
 }
 
-@media screen and (min-width: 64em) {
+@media screen and (max-width: 1024px) {
+    .conversations-list-wrap {
+        display: none !important;
+    }
+    .app-content {
+        margin-left: 0px !important;
+    }
+}
+
+/*@media screen and (min-width: 64em) {
     .conversations-list-wrap {
         width: 28rem;
     }
@@ -262,7 +302,7 @@
     .conversations-list-wrap {
         width: 27rem;
     }
-}
+}*/
 
 @media screen and (min-width: 87.5em) {
     .conversations-list-wrap {

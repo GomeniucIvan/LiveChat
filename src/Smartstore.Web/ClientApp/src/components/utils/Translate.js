@@ -20,7 +20,7 @@ class Translate extends Component {
 
     render() {
         if (this.state.loading) {
-            return <Loading type={this.props.type} />
+            return <Loading type='text' />
         }
 
         const text = this.props['text'];

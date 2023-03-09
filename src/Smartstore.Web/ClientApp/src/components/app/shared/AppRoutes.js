@@ -1,5 +1,7 @@
 import Messages from '../../app/conversation/Messages'
 import Widget from '../../launcher/Widget';
+import VisitorMessageDetails from '../conversation/VisitorMessageDetails';
+import { Account } from '../settings/Account';
 import Install from './Install';
 
 const AppRoutes = [
@@ -15,6 +17,14 @@ const AppRoutes = [
     {
         path: '/widget',
         element: <Widget />
+    },
+    {
+        path: '/message/:urlVisitorId',
+        element: <Messages />
+    },
+    {
+        path: '/settings/general',
+        element: <Account />
     }
 ];
 

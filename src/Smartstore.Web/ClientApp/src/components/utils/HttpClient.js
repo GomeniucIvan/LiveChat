@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import { Storage } from './StorageHelper';
-import { redirectToLogin } from './Utils';
+import { isNullOrEmpty, redirectToLogin } from './Utils';
 const prefixRoute = "/odata/v1/"
 
 export const get = async (sufixRoute, location) => {
@@ -11,9 +11,11 @@ export const get = async (sufixRoute, location) => {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
+            'PathName': isNullOrEmpty(location) ? '' : location.pathname,
         },
         credentials: 'include'
     });
+
 
     const jsonData = await response.json();
 
@@ -47,6 +49,7 @@ export const post = async (sufixRoute, object, location) => {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
+            'PathName': isNullOrEmpty(location) ? '' : location.pathname,
         },
         credentials: 'include',
         body: JSON.stringify(object)
@@ -67,6 +70,7 @@ export const postLauncher = async (sufixRoute, visitorId, object, location, isIn
             'Authorization': localStorage.getItem('access_token'),
             'RefreshToken': localStorage.getItem('refresh_token'),
             "VisitorId": visitorId, 
+            'PathName': isNullOrEmpty(location) ? '' : location.pathname,
         },
         //credentials: 'include',
         body: JSON.stringify(object)

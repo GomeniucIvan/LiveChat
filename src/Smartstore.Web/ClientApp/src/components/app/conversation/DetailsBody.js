@@ -4,6 +4,7 @@ import { isNullOrEmpty } from "../../utils/Utils";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { Loading } from "../../utils/Loading";
 import { Storage } from "../../utils/StorageHelper";
+import Translate from "../../utils/Translate";
 
 const DetailsBody = (props) => {
     let [messageList, setMessageList] = useState([]);
@@ -28,14 +29,14 @@ const DetailsBody = (props) => {
             scrollMessageList();
         });
 
-        connection.on(`visitor_${Storage.CompanyId}_${props.visitorId}_typing`, function (message) {
+        connection.on(`visitor_${Storage.CompanyId}_${props.message.VisitorId}_typing`, function (message) {
             clearTimeout(typingTimer);
             setVisitorTyping(true);
             typingTimer = setTimeout(setVisitorTypingToFalse, 1000);
         });
 
         const PopulateComponent = async () => {
-            let response = await postLauncher('VisitorMessages', /*visitorId*/ props.visitorId, /*model*/ null);
+            let response = await postLauncher('VisitorMessages', /*visitorId*/ props.message.VisitorId, /*model*/ null);
 
             if (response && response.IsValid) {
                 setMessageList(response.Data);
@@ -98,6 +99,8 @@ const DetailsBody = (props) => {
 
                 {visitorTyping &&
                     <div className="type-container">
+                        <Translate text="App.Conversation.VisitorTyping" args={props.message.FullName } />
+
                         <div className="type-block">
                             <div className="type-dot"></div>
                             <div className="type-dot"></div>

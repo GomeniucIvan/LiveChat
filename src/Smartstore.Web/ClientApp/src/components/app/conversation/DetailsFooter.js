@@ -43,7 +43,7 @@ const DetailsFooter = (props) => {
     });
 
     const customerTyping = async () => {
-        const result = await postLauncher('Typing', /*visitorId*/ props.visitorId, null, location);
+        const result = await postLauncher('Typing', /*visitorId*/ props.message.VisitorId, null, location);
     }
 
     const sendMessage = async () => {
@@ -52,7 +52,7 @@ const DetailsFooter = (props) => {
             Message: enteredCode
         };
 
-        const result = await postLauncher('SendMessage', /*visitorId*/ props.visitorId, model, location);
+        const result = await postLauncher('SendMessage', /*visitorId*/ props.message.VisitorId, model, location);
         if (result.IsValid) {
             try {
                 //TypeError: $dialog.modal is not a function

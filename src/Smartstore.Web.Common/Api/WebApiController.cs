@@ -58,6 +58,16 @@ namespace Smartstore.Web.Api
             }
         }
 
+        protected string CurrentPath
+        {
+            get
+            {
+                var httpContext = HttpContext;
+                var userContext = httpContext.User;
+                return userContext.Claims.GetStringClaimValue(JwtClaimTypes.PathName);
+            }
+        }
+
         protected string CompanyKey
         {
             get
@@ -127,6 +137,22 @@ namespace Smartstore.Web.Api
             }
 
             return Ok(model.ToJson());
+        }
+
+        protected string ControllerName
+        {
+            get
+            {
+                var currentPath = CurrentPath;
+                if (!currentPath.IsEmpty() && currentPath.ContainsNoCase("/"))
+                {
+                    var pathArray = currentPath.Split('/');
+                    pathArray = pathArray.Where(v => !v.IsEmpty()).ToArray();
+                    return pathArray[0];
+                }
+
+                return currentPath;
+            }
         }
 
         #endregion

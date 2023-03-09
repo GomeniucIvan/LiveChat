@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData;
 using Newtonsoft.Json;
@@ -71,6 +72,13 @@ namespace Smartstore.Web.Api.Security
                 }
 
                 var currentPath = GetPath(Request?.Path.Value ?? "");
+                var pathNameValue = Request?.Headers[JwtClaimTypes.PathName];
+
+                if (string.IsNullOrEmpty(pathNameValue))
+                {
+                    //todo add for all http client fetch
+                    pathNameValue = new StringValues("/NotImplemented");
+                }
 
                 if (currentPath.StartsWith("/chat"))
                 {
@@ -122,7 +130,8 @@ namespace Smartstore.Web.Api.Security
                     {
                         new Claim(JwtClaimTypes.CompanyKey, companyKey, ClaimValueTypes.String, ClaimsIssuer),
                         new Claim(JwtClaimTypes.CompanyId, companyId, ClaimValueTypes.Integer32, ClaimsIssuer),
-                        new Claim(JwtClaimTypes.VisitorId, visitorId, ClaimValueTypes.Integer, ClaimsIssuer)
+                        new Claim(JwtClaimTypes.VisitorId, visitorId, ClaimValueTypes.Integer, ClaimsIssuer),
+                        new Claim(JwtClaimTypes.PathName, pathNameValue, ClaimValueTypes.String, ClaimsIssuer)
                     };
 
                     var visitorPrincipal = new ClaimsPrincipal(new ClaimsIdentity(visitorClaims, Scheme.Name));
@@ -232,6 +241,7 @@ namespace Smartstore.Web.Api.Security
                 {
                     new Claim(JwtClaimTypes.CustomerId, user.Id.ToString(), ClaimValueTypes.Integer32, ClaimsIssuer),
                     new Claim(JwtClaimTypes.CompanyId, selectedCompanyIdString, ClaimValueTypes.Integer32, ClaimsIssuer),
+                    new Claim(JwtClaimTypes.PathName, pathNameValue, ClaimValueTypes.String, ClaimsIssuer)
                 };
 
                 if (!visitorIdRaw.GetValueOrDefault().ToString().IsEmpty())
@@ -241,6 +251,7 @@ namespace Smartstore.Web.Api.Security
                         new Claim(JwtClaimTypes.CustomerId, user.Id.ToString(), ClaimValueTypes.Integer32, ClaimsIssuer),
                         new Claim(JwtClaimTypes.CompanyId, selectedCompanyIdString, ClaimValueTypes.Integer32, ClaimsIssuer),
                         new Claim(JwtClaimTypes.VisitorId, visitorIdRaw, ClaimValueTypes.Integer32, ClaimsIssuer),
+                        new Claim(JwtClaimTypes.PathName, pathNameValue, ClaimValueTypes.String, ClaimsIssuer)
                     };
                 }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Humanizer.Localisation;
+using Microsoft.AspNetCore.Http;
 using NuGet.Protocol;
 using Smartstore.Core.Localization;
 using Smartstore.Core.Localization.Routing;
@@ -6,6 +7,7 @@ using Smartstore.Core.Platform.Identity.Dtos;
 using Smartstore.Core.Platform.Localization.Proc;
 using Smartstore.Core.Seo;
 using Smartstore.Web.Api;
+using Smartstore.Web.Models.Common;
 using Smartstore.Web.Models.System;
 using System;
 
@@ -83,6 +85,25 @@ namespace Smartstore.Web.Controllers
         {
             var resources = await _localizationService.GetPublicResourcesAsync();
             return ApiJson(new GenericApiModel<IList<LocaleStringResourceDto>>().Success(resources), httpContext: null);
+        }
+
+        [LocalizedRoute("SecondaryAsideList")]
+        public async Task<IActionResult> SecondaryAsideList()
+        {
+            var controllerName = ControllerName;
+            var list = new List<VmSecondaryMenuItem>();
+
+            if (controllerName.EqualsNoCase("Settings"))
+            {
+                list.Add(new VmSecondaryMenuItem
+                {
+                    Text = T("App.Navigation.Settings.Account"),
+                    SVGClass = "arrow-trending-lines-outline",
+                    Url = "/settings/general"
+                });
+            }
+
+            return ApiJson(new GenericApiModel<IList<VmSecondaryMenuItem>>().Success(list.ToArray()), HttpContext);
         }
 
         #endregion

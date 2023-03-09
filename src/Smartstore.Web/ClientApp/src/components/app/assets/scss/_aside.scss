@@ -72,6 +72,39 @@
     }
 }
 
+.secondary-aside {
+    .secondary-aside-menu {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        background: var(--white);
+        border-right: 1px solid #f1f5f8;
+        border-right: 1px solid var(--s-50);
+        height: 100%;
+        width: 20rem;
+        flex-shrink: 0;
+        overflow-y: hidden;
+        position: unset;
+
+        .menu {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0.8rem;
+            padding: var(--space-small);
+            overflow-y: auto;
+
+            &.vertical {
+                flex-wrap: nowrap;
+                flex-direction: column;
+            }
+        }
+    }
+}
+
 @media (min-width: 992px) {
     .app-sidebar {
         display: flex;

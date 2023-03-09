@@ -11,5 +11,6 @@
         public const string ErrorMessage = "Message";
         public const string ForceLogOut = "ForceLogOut";
         public const string VisitorId = "VisitorId";
+        public const string PathName = "PathName";
     }
 }

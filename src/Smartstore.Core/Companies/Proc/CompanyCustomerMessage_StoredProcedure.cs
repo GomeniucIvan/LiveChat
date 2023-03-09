@@ -9,13 +9,16 @@ namespace Smartstore.Core.Companies.Proc
     {
         public static IList<CompanyMessageDto> CompanyMessage_GetList(this SmartDbContext db,
             int companyId,
+            int? visitorId = null,
             int pageSize = 50)
         {
             var pCompanyIdDbParameter = db.DataProvider.CreateIntParameter("CompanyId", companyId);
+            var pVisitorIdDbParameter = db.DataProvider.CreateIntParameter("VisitorId", visitorId);
             var pPageSizeDbParameter = db.DataProvider.CreateIntParameter("PageSize", pageSize);
 
             return db.ExecStoreProcedure<CompanyMessageDto>($"{nameof(CompanyMessage)}_GetList",
                 pCompanyIdDbParameter,
+                pVisitorIdDbParameter,
                 pPageSizeDbParameter).ToList();
         }
 

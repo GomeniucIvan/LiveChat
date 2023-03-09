@@ -5,9 +5,9 @@ import DetailsHeader from "./DetailsHeader"
 const Details = (props) => {
     return (
         <div className='conversation-details-wrap'>
-            {<DetailsHeader visitorId={props.visitorId} />}
-            {<DetailsBody visitorId={props.visitorId} />}
-            {<DetailsFooter visitorId={props.visitorId} />}    
+            {<DetailsHeader message={props.message} />}
+            {<DetailsBody message={props.message} />}
+            {<DetailsFooter message={props.message} />}    
         </div>
     )
 }

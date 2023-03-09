@@ -124,6 +124,7 @@ GO
 
 CREATE PROCEDURE [dbo].[CompanyMessage_GetList]
     (@CompanyId INT,
+	 @VisitorId INT,
      @PageSize INT)
 AS
 BEGIN
@@ -138,6 +139,7 @@ BEGIN
 	MAX(cm.Id)
     FROM dbo.CompanyMessage cm WITH (NOLOCK)         
     WHERE cm.CompanyId = @CompanyId
+	AND (ISNULL(@VisitorId,0) = 0 OR cm.VisitorId = @VisitorId)
 	GROUP BY cm.VisitorId;
 
     SELECT 

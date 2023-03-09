@@ -27,7 +27,6 @@ namespace Smartstore.Core.Companies.Dtos
         public string VisitorUniqueId { get; set; }
         public DateTime? ReadOnUtc { get; set; }
 
-
         public string CustomerInitials
         {
             get
